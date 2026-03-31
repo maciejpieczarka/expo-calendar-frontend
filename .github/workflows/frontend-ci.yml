@@ -15,3 +15,4 @@ jobs:
 
       - run: npm install
       - run: npx expo-doctor
+      - run: npx @react-native-reusables/cli@latest doctor
