@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-const index = () => {
+const MainScreen = () => {
   return (
     <View>
-      <Text>index</Text>
+      <Text>Main Calendar Here</Text>
     </View>
   );
 };
 
-export default index;
+export default MainScreen;
