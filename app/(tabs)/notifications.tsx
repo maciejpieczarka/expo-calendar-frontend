@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-const calendars = () => {
+const NotificationsScreen = () => {
   return (
     <View>
-      <Text>calendars</Text>
+      <Text>Notifications Here</Text>
     </View>
   );
 };
 
-export default calendars;
+export default NotificationsScreen;
