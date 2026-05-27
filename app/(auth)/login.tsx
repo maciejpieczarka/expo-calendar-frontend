@@ -1,12 +1,20 @@
+import AppFormHeader from '@/components/AppFormHeader';
+import ResetOnboardingButton from '@/components/ResetOnboardingButton';
+import { SignInForm } from '@/components/sign-in-form';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 
-const login = () => {
+const LoginScreen = () => {
   return (
-    <View>
-      <Text>login</Text>
-    </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      className="flex-1 items-stretch justify-start pt-safe-offset-36 gap-10"
+    >
+      <ResetOnboardingButton />
+      <AppFormHeader />
+      <SignInForm />
+    </KeyboardAvoidingView>
   );
 };
 
-export default login;
+export default LoginScreen;
