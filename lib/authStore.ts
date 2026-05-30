@@ -15,6 +15,7 @@ type AuthState = {
   isLoading: boolean;
   hasCompletedOnboarding: boolean;
   error: string | null;
+  _hasHydrated: boolean;
 
   authenticate: (email: string, password: string) => Promise<void>;
   register: (
@@ -29,9 +30,10 @@ type AuthState = {
   clearError: () => void;
   // Metoda developerska do resetowania landingScreenu
   resetOnboarding: () => void;
+  setHasHydrated: (value: boolean) => void;
 };
 
-export const AuthStore = create<AuthState>()(
+export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
       user: null,
@@ -40,6 +42,7 @@ export const AuthStore = create<AuthState>()(
       isLoading: false,
       hasCompletedOnboarding: false,
       error: null,
+      _hasHydrated: false,
 
       authenticate: async (email: string, password: string) => {
         set(state => {
@@ -109,15 +112,18 @@ export const AuthStore = create<AuthState>()(
 
       // Czy token istnieje przy starcie apki
       checkAuth: async () => {
+        set(state => {
+          return { ...state, isLoading: true };
+        });
         const { token } = get();
 
         if (token) {
           set(state => {
-            return { ...state, isLoggedIn: true };
+            return { ...state, isLoggedIn: true, isLoading: false };
           });
         } else {
           set(state => {
-            return { ...state, isLoggedIn: false };
+            return { ...state, isLoggedIn: false, isLoading: false };
           });
         }
       },
@@ -147,6 +153,13 @@ export const AuthStore = create<AuthState>()(
             error: null
           };
         });
+      },
+
+      setHasHydrated: (value: boolean) => {
+        set(state => ({
+          ...state,
+          _hasHydrated: value
+        }));
       }
     }),
     {
@@ -160,8 +173,18 @@ export const AuthStore = create<AuthState>()(
         // Tylko te pola są zapisywane do SecureStore
         token: state.token,
         user: state.user,
-        isLoggedIn: state.isLoggedIn
-      })
+        isLoggedIn: state.isLoggedIn,
+        hasCompletedOnboarding: state.hasCompletedOnboarding
+      }),
+      onRehydrateStorage: () => {
+        return (state, error) => {
+          if (error) {
+            console.error('Błąd hydracji store:', error);
+          } else {
+            state?.setHasHydrated(true);
+          }
+        };
+      }
     }
   )
 );
