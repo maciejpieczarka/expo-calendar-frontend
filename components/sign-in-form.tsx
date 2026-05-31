@@ -9,19 +9,23 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Text } from '@/components/ui/text';
+import { useLogin } from '@/hooks/useLogin';
 import { Link } from 'expo-router';
 import * as React from 'react';
-import { TextInput, View } from 'react-native';
+import { ActivityIndicator, TextInput, View } from 'react-native';
 
 export function SignInForm() {
   const passwordInputRef = React.useRef<TextInput>(null);
+
+  // Inicjalizacja viewmodelu
+  const { state, actions } = useLogin();
 
   function onEmailSubmitEditing() {
     passwordInputRef.current?.focus();
   }
 
   function onSubmit() {
-    // TODO: Submit form and navigate to protected screen if successful
+    actions.handleLogin();
   }
 
   return (
@@ -35,11 +39,21 @@ export function SignInForm() {
         </CardDescription>
       </CardHeader>
       <CardContent className="gap-6">
+        {state.errors.general && (
+          <View className="bg-red-500/10 p-3 rounded-lg border border-red-500/20">
+            <Text className="text-red-500 text-center text-sm font-medium">
+              {state.errors.general}
+            </Text>
+          </View>
+        )}
         <View className="gap-6">
+          {/* Email */}
           <View className="gap-1.5">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
+              value={state.email}
+              onChangeText={actions.setEmail}
               placeholder="m@example.com"
               keyboardType="email-address"
               autoComplete="email"
@@ -47,22 +61,47 @@ export function SignInForm() {
               onSubmitEditing={onEmailSubmitEditing}
               returnKeyType="next"
               submitBehavior="submit"
+              className={
+                state.errors.password ? 'border-red-500 bg-red-500/5' : ''
+              }
             />
+            {state.errors.email && (
+              <Text className="text-red-500 text-xs ml-1">
+                {state.errors.email}
+              </Text>
+            )}
           </View>
+          {/* Password */}
           <View className="gap-1.5">
             <View className="flex-row items-center">
               <Label htmlFor="password">Password</Label>
             </View>
             <Input
               ref={passwordInputRef}
+              value={state.password}
+              onChangeText={actions.setPassword}
               id="password"
               secureTextEntry
               returnKeyType="send"
               onSubmitEditing={onSubmit}
+              className={
+                state.errors.password ? 'border-red-500 bg-red-500/5' : ''
+              }
             />
+            <Text className="text-red-500 text-xs ml-1">
+              {state.errors.password}
+            </Text>
           </View>
-          <Button className="w-full" onPress={onSubmit}>
-            <Text>Continue</Text>
+          <Button
+            disabled={state.isLoading}
+            className="w-full"
+            onPress={onSubmit}
+          >
+            {state.isLoading ? (
+              <ActivityIndicator color="#fff" size="small" />
+            ) : (
+              <Text>Continue</Text>
+            )}
           </Button>
         </View>
         <View className="flex flex-row items-center justify-center gap-2">

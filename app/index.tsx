@@ -41,6 +41,7 @@ const LandingScreen = () => {
             variant="link"
             onPress={() => {
               completeOnboarding();
+              router.replace('/login');
             }}
           >
             <Text className="text-center  text-slate-50">
