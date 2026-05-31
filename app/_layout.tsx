@@ -14,10 +14,12 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const { colorScheme } = useColorScheme();
 
-  const { _hasHydrated, isLoggedIn, hasCompletedOnboarding } = useAuthStore();
+  const { _hasHydrated, isLoggedIn, hasCompletedOnboarding, checkAuth } =
+    useAuthStore();
 
   useEffect(() => {
     if (_hasHydrated) {
+      checkAuth();
       SplashScreen.hideAsync();
     }
   }, [_hasHydrated]);
