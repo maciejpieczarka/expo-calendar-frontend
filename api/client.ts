@@ -5,16 +5,23 @@ export async function fetchApi<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const token = await SecureStore.getItemAsync('auth_token');
-
   const defaultHeaders: HeadersInit = {
     'Content-Type': 'application/json'
   };
 
-  if (token) {
-    defaultHeaders['Authorization'] = `Bearer ${token}`;
-  }
+  try {
+    const zustandStorage = await SecureStore.getItemAsync('auth-storage');
+    if (zustandStorage) {
+      const parsedStorage = JSON.parse(zustandStorage);
+      const token = parsedStorage?.state?.token;
 
+      if (token) {
+        defaultHeaders['Authorization'] = `Bearer ${token}`;
+      }
+    }
+  } catch (e) {
+    console.error('Błąd odczytu tokenu ze struktury Zustand:', e);
+  }
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers: {
@@ -22,6 +29,10 @@ export async function fetchApi<T>(
       ...options.headers
     }
   });
+
+  if (response.status === 401) {
+    throw new Error('Podano nieprawidłowe dane');
+  }
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));

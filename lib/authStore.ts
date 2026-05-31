@@ -17,7 +17,7 @@ type AuthState = {
   error: string | null;
   _hasHydrated: boolean;
 
-  authenticate: (email: string, password: string) => Promise<void>;
+  authenticate: (username: string, password: string) => Promise<void>;
   register: (
     email: string,
     username: string,
@@ -44,20 +44,30 @@ export const useAuthStore = create<AuthState>()(
       error: null,
       _hasHydrated: false,
 
-      authenticate: async (email: string, password: string) => {
+      authenticate: async (username: string, password: string) => {
         set(state => {
           return { ...state, isLoading: true, error: null };
         });
 
         try {
-          const response = await authApi.authenticate({ email, password });
+          const response = await authApi.authenticate({ username, password });
 
           set(state => {
             return {
               ...state,
+              token: response.token
+            };
+          });
+          const accountData = await authApi.getAccount();
+          set(state => {
+            return {
+              ...state,
               isLoading: false,
-              token: response.token,
-              isLoggedIn: true
+              isLoggedIn: true,
+              user: {
+                email: accountData.email,
+                username: accountData.username
+              }
             };
           });
         } catch (error: any) {
@@ -67,7 +77,9 @@ export const useAuthStore = create<AuthState>()(
 
               isLoading: false,
               error: error.message || 'Błąd logowania',
-              isLoggedIn: false
+              isLoggedIn: false,
+              token: null,
+              user: null
             };
           });
           throw error;

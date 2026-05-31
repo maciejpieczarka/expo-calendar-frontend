@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import { useState } from 'react';
 
 type LoginErrors = {
-  email?: string;
+  username?: string;
   password?: string;
   general?: string;
 };
@@ -13,7 +13,7 @@ export const useLogin = () => {
 
   const { authenticate, isLoading } = useAuthStore();
 
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<LoginErrors>({});
 
@@ -22,8 +22,8 @@ export const useLogin = () => {
     const currentErrors: LoginErrors = {};
     let isValid = true;
 
-    if (!email.trim()) {
-      currentErrors.email = 'Wprowadź adres e-mail.';
+    if (!username.trim()) {
+      currentErrors.username = 'Wprowadź nazwę uzytkownika.';
       isValid = false;
     }
 
@@ -38,12 +38,11 @@ export const useLogin = () => {
 
   const handleLogin = async () => {
     setErrors({});
-
     if (!validateForm()) return;
 
     try {
       // Strzał do API / Zustand
-      await authenticate(email, password);
+      await authenticate(username, password);
     } catch (error: any) {
       const apiMessage = error.message || '';
 
@@ -52,7 +51,7 @@ export const useLogin = () => {
         apiMessage.toLowerCase().includes('not found') ||
         apiMessage.toLowerCase().includes('user')
       ) {
-        setErrors({ email: 'Użytkownik o podanym adresie nie istnieje.' });
+        setErrors({ username: 'Użytkownik o podanej nazwie nie istnieje.' });
       } else if (
         apiMessage.toLowerCase().includes('password') ||
         apiMessage.toLowerCase().includes('invalid')
@@ -66,13 +65,13 @@ export const useLogin = () => {
 
   return {
     state: {
-      email,
+      username,
       password,
       errors,
       isLoading
     },
     actions: {
-      setEmail,
+      setUsername,
       setPassword,
       handleLogin
     }

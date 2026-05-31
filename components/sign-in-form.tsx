@@ -20,7 +20,7 @@ export function SignInForm() {
   // Inicjalizacja viewmodelu
   const { state, actions } = useLogin();
 
-  function onEmailSubmitEditing() {
+  function onUsernameSubmitEditting() {
     passwordInputRef.current?.focus();
   }
 
@@ -47,27 +47,26 @@ export function SignInForm() {
           </View>
         )}
         <View className="gap-6">
-          {/* Email */}
+          {/* username */}
           <View className="gap-1.5">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="username">Username</Label>
             <Input
-              id="email"
-              value={state.email}
-              onChangeText={actions.setEmail}
-              placeholder="m@example.com"
-              keyboardType="email-address"
-              autoComplete="email"
+              id="username"
+              value={state.username}
+              onChangeText={actions.setUsername}
+              placeholder="JohnDoe"
+              keyboardType="default"
               autoCapitalize="none"
-              onSubmitEditing={onEmailSubmitEditing}
+              onSubmitEditing={onUsernameSubmitEditting}
               returnKeyType="next"
               submitBehavior="submit"
               className={
                 state.errors.password ? 'border-red-500 bg-red-500/5' : ''
               }
             />
-            {state.errors.email && (
+            {state.errors.username && (
               <Text className="text-red-500 text-xs ml-1">
-                {state.errors.email}
+                {state.errors.username}
               </Text>
             )}
           </View>

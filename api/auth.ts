@@ -1,7 +1,7 @@
 import { fetchApi } from './client';
 
 export interface LoginCredentials {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -13,6 +13,11 @@ export interface RegisterData {
 
 export interface AuthResponse {
   token: string;
+}
+
+export interface UserAccount {
+  email: string;
+  username: string;
 }
 
 export const authApi = {
@@ -30,6 +35,12 @@ export const authApi = {
     return fetchApi('/api/auth/register', {
       method: 'POST',
       body: JSON.stringify(data)
+    });
+  },
+
+  getAccount: async (): Promise<UserAccount> => {
+    return fetchApi('/api/account', {
+      method: 'GET'
     });
   }
 };
