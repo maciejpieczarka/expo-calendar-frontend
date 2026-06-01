@@ -8,6 +8,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,25 +30,27 @@ export default function RootLayout() {
     return null;
   }
   return (
-    <SafeAreaProvider>
-      <ThemeProvider value={NAV_THEME[colorScheme ?? 'dark']}>
-        <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Protected guard={isLoggedIn}>
-            <Stack.Screen name="(tabs)" />
-          </Stack.Protected>
+    <GestureHandlerRootView>
+      <SafeAreaProvider>
+        <ThemeProvider value={NAV_THEME[colorScheme ?? 'dark']}>
+          <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Protected guard={isLoggedIn}>
+              <Stack.Screen name="(tabs)" />
+            </Stack.Protected>
 
-          <Stack.Protected guard={!isLoggedIn && !hasCompletedOnboarding}>
-            <Stack.Screen name="index" />
-          </Stack.Protected>
+            <Stack.Protected guard={!isLoggedIn && !hasCompletedOnboarding}>
+              <Stack.Screen name="index" />
+            </Stack.Protected>
 
-          <Stack.Protected guard={!isLoggedIn && hasCompletedOnboarding}>
-            <Stack.Screen name="(auth)" />
-          </Stack.Protected>
-        </Stack>
+            <Stack.Protected guard={!isLoggedIn && hasCompletedOnboarding}>
+              <Stack.Screen name="(auth)" />
+            </Stack.Protected>
+          </Stack>
 
-        <PortalHost />
-      </ThemeProvider>
-    </SafeAreaProvider>
+          <PortalHost />
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
