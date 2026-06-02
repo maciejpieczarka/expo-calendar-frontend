@@ -1,12 +1,7 @@
 import { useAuthStore } from '@/lib/authStore';
+import { LoginErrors } from '@/types/Iauth';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-
-type LoginErrors = {
-  username?: string;
-  password?: string;
-  general?: string;
-};
 
 export const useLogin = () => {
   const router = useRouter();

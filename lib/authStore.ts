@@ -1,37 +1,8 @@
 import { authApi } from '@/api/auth';
+import { AuthState } from '@/types/Iauth';
 import * as SecureStore from 'expo-secure-store';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-
-type User = {
-  email: string;
-  username: string;
-};
-
-type AuthState = {
-  user: User | null;
-  token: string | null;
-  isLoggedIn: boolean;
-  isLoading: boolean;
-  hasCompletedOnboarding: boolean;
-  error: string | null;
-  _hasHydrated: boolean;
-
-  authenticate: (username: string, password: string) => Promise<void>;
-  register: (
-    email: string,
-    username: string,
-    password: string
-  ) => Promise<void>;
-  logout: () => void;
-  checkAuth: () => Promise<void>;
-  completeOnboarding: () => void;
-
-  clearError: () => void;
-  // Metoda developerska do resetowania landingScreenu
-  resetOnboarding: () => void;
-  setHasHydrated: (value: boolean) => void;
-};
 
 export const useAuthStore = create<AuthState>()(
   persist(

@@ -1,24 +1,10 @@
+import {
+  AuthResponse,
+  LoginCredentials,
+  RegisterData,
+  UserAccount
+} from '@/types/IauthApi';
 import { fetchApi } from './client';
-
-export interface LoginCredentials {
-  username: string;
-  password: string;
-}
-
-export interface RegisterData {
-  email: string;
-  username: string;
-  password: string;
-}
-
-export interface AuthResponse {
-  token: string;
-}
-
-export interface UserAccount {
-  email: string;
-  username: string;
-}
 
 export const authApi = {
   // Call na endpoint do autoryzacji, przekazujemy dane - dostajemy token
