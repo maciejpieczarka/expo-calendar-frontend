@@ -1,12 +1,10 @@
 import { calendarApi } from '@/api/calendar';
-import { Calendar, CalendarEvent, CalendarState } from '@/types/ICalendar';
+import { CalendarEvent, CalendarState } from '@/types/ICalendar';
 import { create } from 'zustand';
 
 export const useCalendarStore = create<CalendarState>()((set, get) => ({
   calendars: [],
   allEvents: [],
-  selectedCalendarEvents: [],
-  selectedCalendar: null,
   isLoading: false,
   error: null,
 
@@ -81,13 +79,6 @@ export const useCalendarStore = create<CalendarState>()((set, get) => ({
     }
   },
 
-  setSelectedCalendar: (calendar: Calendar | null) => {
-    set({ selectedCalendar: calendar });
-    if (calendar === null) {
-      set({ selectedCalendarEvents: [] }); // Czyszczenie po zamknięciu modala
-    }
-  },
-
   fetchAllEvents: async () => {
     set({ isLoading: true, error: null });
     try {
@@ -98,14 +89,28 @@ export const useCalendarStore = create<CalendarState>()((set, get) => ({
       set({ isLoading: false, error: error.message });
     }
   },
-  fetchEventsByCalendarId: async (calendarId: number) => {
+
+  updateCalendarName: async (calendarId, name) => {
     set({ isLoading: true, error: null });
     try {
-      //TODO: Add api call
-      const mockSelectedEvents: CalendarEvent[] = [];
-      set({ selectedCalendarEvents: mockSelectedEvents, isLoading: false });
+      const updatedCalendar = await calendarApi.updateCalendarName(
+        calendarId,
+        name
+      );
+
+      // Podmieniamy w tablicy tylko ten jeden zmodyfikowany obiekt kalendarza
+      set(state => ({
+        calendars: state.calendars.map(c =>
+          c.id === calendarId ? updatedCalendar : c
+        ),
+        isLoading: false
+      }));
     } catch (error: any) {
-      set({ isLoading: false, error: error.message });
+      set({
+        isLoading: false,
+        error: error.message || 'Nie udało się zaktualizować nazwy'
+      });
+      throw error;
     }
   }
 }));
