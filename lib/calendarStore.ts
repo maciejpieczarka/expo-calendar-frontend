@@ -28,7 +28,7 @@ export const useCalendarStore = create<CalendarState>()((set, get) => ({
         };
       });
     } catch (error: any) {
-      console.log(error);
+      console.error(error);
       set({
         isLoading: false,
         error: error.message || 'Nie udało się pobrać kalendarzy'
