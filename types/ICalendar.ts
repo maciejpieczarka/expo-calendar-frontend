@@ -23,8 +23,6 @@ export interface CalendarEvent {
 export interface CalendarState {
   calendars: Calendar[];
   allEvents: CalendarEvent[];
-  selectedCalendarEvents: CalendarEvent[]; // Wydarzenia tylko dla wybranego kalendarza (do modala)
-  selectedCalendar: Calendar | null; // Obecnie kliknięty kalendarz
 
   // Stan UI
   isLoading: boolean;
@@ -34,8 +32,7 @@ export interface CalendarState {
   fetchCalendars: () => Promise<void>;
   createCalendar: (name: string) => Promise<void>;
   deleteCalendar: (id: number) => Promise<void>;
-  setSelectedCalendar: (calendar: Calendar | null) => void;
+  updateCalendarName: (calendarId: number, name: string) => Promise<void>;
 
   fetchAllEvents: () => Promise<void>;
-  fetchEventsByCalendarId: (calendarId: number) => Promise<void>;
 }
