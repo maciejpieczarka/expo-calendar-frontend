@@ -28,6 +28,7 @@ export const useCalendarStore = create<CalendarState>()((set, get) => ({
         };
       });
     } catch (error: any) {
+      console.log(error);
       set({
         isLoading: false,
         error: error.message || 'Nie udało się pobrać kalendarzy'
@@ -66,8 +67,6 @@ export const useCalendarStore = create<CalendarState>()((set, get) => ({
         return {
           ...state,
           calendars: state.calendars.filter(c => c.id !== id),
-          selectedCalendar:
-            state.selectedCalendar?.id === id ? null : state.selectedCalendar,
           isLoading: false
         };
       });

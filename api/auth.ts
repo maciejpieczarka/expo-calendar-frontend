@@ -3,7 +3,7 @@ import {
   LoginCredentials,
   RegisterData,
   UserAccount
-} from '@/types/IauthApi';
+} from '@/types/Iauth';
 import { fetchApi } from './client';
 
 export const authApi = {
