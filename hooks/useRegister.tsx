@@ -1,14 +1,7 @@
 import { useAuthStore } from '@/lib/authStore';
+import { RegisterErrors } from '@/types/Iauth';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-
-// Definiujemy typy dla błędów pól formularza
-type RegisterErrors = {
-  username?: string;
-  email?: string;
-  password?: string;
-  general?: string;
-};
 
 export const useRegister = () => {
   const router = useRouter();
