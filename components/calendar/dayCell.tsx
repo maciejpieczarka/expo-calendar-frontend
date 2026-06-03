@@ -51,7 +51,9 @@ function DayCellComponent({
 const propEqualCheck = (prevProps: DayCellProps, nextProps: DayCellProps) => {
   return (
     prevProps.id === nextProps.id &&
-    prevProps.events.length === nextProps.events.length
+    prevProps.events.length === nextProps.events.length &&
+    prevProps.isCurrentMonth === nextProps.isCurrentMonth &&
+    nextProps.isToday === prevProps.isToday
   );
 };
 

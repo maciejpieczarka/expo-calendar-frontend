@@ -15,16 +15,18 @@ interface CalendarViewModel {
   currentYear: SelectOption;
   availableMonths: SelectOption[];
   availableYears: SelectOption[];
-  jumpToDate: (year: string, month: string) => void;
-  returnToToday: () => void;
+  jumpToDate: (year: string, month: string) => number;
+  returnToToday: () => number;
   renderedMonths: MonthPageData[];
   INITIAL_INDEX: number;
   onPageChange: (index: number) => void;
+  isJumping: boolean;
 }
 
 export const useCalendarViewModel = (): CalendarViewModel => {
   const [initialAnchorDate, setInitialAnchorDate] = useState(new Date());
   const [activeIndex, setActiveIndex] = useState(INITIAL_INDEX);
+  const [isJumping, setIsJumping] = useState(false);
 
   //months for select
   const availableMonths = useMemo((): SelectOption[] => {
@@ -49,15 +51,45 @@ export const useCalendarViewModel = (): CalendarViewModel => {
   }, []);
 
   //function for changing the anchor date
-  const jumpToDate = (year: string, month: string) => {
-    console.log(year, month);
-    setInitialAnchorDate(new Date(parseInt(year), parseInt(month), 1));
+  const jumpToDate = (year: string, month: string): number => {
+    const targetYear = parseInt(year);
+    const targetMonth = parseInt(month);
+
+    // Calculate how many months away the target is from the anchor
+    const anchorYear = initialAnchorDate.getFullYear();
+    const anchorMonth = initialAnchorDate.getMonth();
+    const monthDiff =
+      (targetYear - anchorYear) * 12 + (targetMonth - anchorMonth);
+    console.log(monthDiff);
+
+    const targetIndex = INITIAL_INDEX + monthDiff;
+    console.log(targetIndex);
+
+    if (targetIndex >= 5 && targetIndex <= WINDOW_SIZE * 2 - 5) {
+      setIsJumping(true);
+      setTimeout(() => {
+        setIsJumping(false);
+      }, 750);
+      console.log('triggeruje sie');
+      setActiveIndex(targetIndex);
+      return targetIndex;
+    }
+    setIsJumping(true);
+    setTimeout(() => {
+      setIsJumping(false);
+    }, 1000);
+    setInitialAnchorDate(new Date(targetYear, targetMonth, 1));
     setActiveIndex(INITIAL_INDEX);
+
+    return INITIAL_INDEX;
   };
 
-  const returnToToday = () => {
+  const returnToToday = (): number => {
     const today = new Date();
-    jumpToDate(today.getFullYear().toString(), today.getMonth().toString());
+    return jumpToDate(
+      today.getFullYear().toString(),
+      today.getMonth().toString()
+    );
   };
 
   // skeletons without dayCells
@@ -121,6 +153,7 @@ export const useCalendarViewModel = (): CalendarViewModel => {
     returnToToday,
     renderedMonths,
     INITIAL_INDEX,
-    onPageChange: (index: number) => setActiveIndex(index)
+    onPageChange: (index: number) => setActiveIndex(index),
+    isJumping
   };
 };

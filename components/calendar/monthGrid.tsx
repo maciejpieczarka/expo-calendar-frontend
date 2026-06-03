@@ -9,10 +9,10 @@ export interface MonthGridProps {
 function MonthGrid({ dayCells }: MonthGridProps) {
   return (
     <View className="flex flex-row flex-1 flex-wrap w-full">
-      {dayCells.map(day => (
+      {dayCells.map((day, index) => (
         <DayCell
           key={day.id}
-          id={day.id}
+          id={`cell-slot-${index}`}
           isToday={day.isToday}
           isCurrentMonth={day.isCurrentMonth}
           dayNumber={day.dayNumber}
