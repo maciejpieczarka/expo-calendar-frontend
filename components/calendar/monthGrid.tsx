@@ -8,7 +8,10 @@ export interface MonthGridProps {
 
 function MonthGrid({ dayCells }: MonthGridProps) {
   return (
-    <View className="flex flex-row flex-1 flex-wrap w-full">
+    <View
+      className="flex flex-row flex-1 flex-wrap w-full"
+      // renderToHardwareTextureAndroid={true}
+    >
       {dayCells.map((day, index) => (
         <DayCell
           key={day.id}

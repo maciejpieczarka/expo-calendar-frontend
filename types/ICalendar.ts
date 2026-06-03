@@ -1,4 +1,4 @@
-type User = {
+export type User = {
   id: number;
   username: string;
   email: string;
@@ -10,6 +10,18 @@ export type Calendar = {
   owner: User;
   participants: User[];
 };
+
+export interface CalendarEvent {
+  id: number;
+  name: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  calendars: Calendar[];
+  participants: User[];
+  owner: User;
+  color: string;
+}
 
 export interface CalendarState {
   calendars: Calendar[];

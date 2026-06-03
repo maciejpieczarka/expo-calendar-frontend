@@ -1,13 +1,14 @@
 import { View } from 'react-native';
 import { JSX, memo } from 'react';
-import { Text } from '@/components/ui/text';
-import { CalendarEvent } from '@/features/calendar/calendar.types';
+import { Text } from 'react-native';
+import EventLine from '@/components/calendar/eventLine';
+import { OptimizedCalendarEvent } from '@/features/calendar/calendar.types';
 export interface DayCellProps {
   isCurrentMonth: boolean;
   isToday: boolean;
   id: string;
   dayNumber: number;
-  events: CalendarEvent[];
+  events: OptimizedCalendarEvent[];
 }
 
 function DayCellComponent({
@@ -39,10 +40,19 @@ function DayCellComponent({
           style={{
             fontSize: 10
           }}
-          className={`${isToday ? 'text-rose-500 font-semibold' : 'text-white'} +  mt-0 ml-2`}
+          className={`${isToday ? 'text-rose-500 font-semibold' : 'text-white'} +  mt-1 ml-2`}
         >
           {dayNumber}
         </Text>
+        <View className={'p-1'}>
+          {events.map(element => (
+            <EventLine
+              key={element.id}
+              name={element.name}
+              color={element.color}
+            />
+          ))}
+        </View>
       </View>
     </View>
   );
@@ -58,5 +68,6 @@ const propEqualCheck = (prevProps: DayCellProps, nextProps: DayCellProps) => {
 };
 
 const DayCell = memo(DayCellComponent, propEqualCheck);
+// const DayCell = DayCellComponent;
 
 export default DayCell;
