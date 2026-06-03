@@ -23,7 +23,13 @@ interface CalendarViewModel {
   isJumping: boolean;
 }
 
-export const useCalendarViewModel = (): CalendarViewModel => {
+interface CalendarViewModelProps {
+  calendarIds: number[];
+}
+
+export const useCalendarViewModel = ({
+  calendarIds
+}: CalendarViewModelProps): CalendarViewModel => {
   const [initialAnchorDate, setInitialAnchorDate] = useState(new Date());
   const [activeIndex, setActiveIndex] = useState(INITIAL_INDEX);
   const [isJumping, setIsJumping] = useState(false);

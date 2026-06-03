@@ -1,13 +1,29 @@
 import { View } from 'react-native';
-import MonthHeader from '@/components/calendar/monthHeader';
+import MonthPickerHeader from '@/components/calendar/monthPickerHeader';
 import WeekDaysRow from '@/components/calendar/weekDaysRow';
 import MonthGrid from '@/components/calendar/monthGrid';
 import { useCalendarViewModel } from '@/features/calendar/useCalendarViewModel';
 import PagerView from 'react-native-pager-view';
 import { useRef } from 'react';
 import { MonthGridSkeleton } from '@/components/calendar/monthGridSkeleton';
+import { ReactNode } from 'react';
+import { SelectOption } from '@/components/calendar/scrollableSelect';
 
-function Calendar() {
+export interface CalendarHeaderProps {
+  selectedYear: SelectOption;
+  selectedMonth: SelectOption;
+  yearOptions: SelectOption[];
+  monthOptions: SelectOption[];
+  jumpToDate: (year: string, month: string) => void;
+  returnToToday: () => void;
+}
+
+export interface CalendarProps {
+  calendarIds: number[];
+  renderHeader?: (props: CalendarHeaderProps) => ReactNode;
+}
+
+function Calendar({ calendarIds, renderHeader }: CalendarProps) {
   const {
     currentMonthValue,
     currentYear,
@@ -19,7 +35,7 @@ function Calendar() {
     INITIAL_INDEX,
     onPageChange,
     isJumping
-  } = useCalendarViewModel();
+  } = useCalendarViewModel({ calendarIds });
 
   const pagerRef = useRef<PagerView>(null);
 
@@ -39,14 +55,15 @@ function Calendar() {
 
   return (
     <View className={'flex-1'}>
-      <MonthHeader
-        selectedYear={currentYear}
-        selectedMonth={currentMonthValue}
-        yearOptions={availableYears}
-        monthOptions={availableMonths}
-        onDateChange={handleDateSelection}
-        onReturnPress={handleReturnToToday}
-      />
+      {renderHeader &&
+        renderHeader({
+          selectedYear: currentYear,
+          selectedMonth: currentMonthValue,
+          yearOptions: availableYears,
+          monthOptions: availableMonths,
+          jumpToDate: handleDateSelection,
+          returnToToday: handleReturnToToday
+        })}
       <WeekDaysRow />
       <View style={{ flex: 1 }}>
         <View
