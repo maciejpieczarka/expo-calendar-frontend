@@ -1,5 +1,9 @@
 import { fetchApi } from '@/api/client';
-import { CalendarEvent, CreateEventData } from '@/types/IEvent';
+import {
+  CalendarEvent,
+  CreateEventData,
+  UpdateEventData
+} from '@/types/IEvent';
 
 export const eventApi = {
   // Create a new event
@@ -48,11 +52,19 @@ export const eventApi = {
   //   Update event details
   updateEvent: async (
     eventId: number,
-    eventData: CalendarEvent
+    eventData: UpdateEventData
   ): Promise<CalendarEvent> => {
     return fetchApi<CalendarEvent>(`/api/event/${eventId}`, {
       method: 'PUT',
       body: JSON.stringify(eventData)
+    });
+  },
+  assignUserToEvent: async (
+    eventId: number,
+    userId: number
+  ): Promise<CalendarEvent> => {
+    return fetchApi<CalendarEvent>(`/api/event/${eventId}/assign/${userId}`, {
+      method: 'PUT'
     });
   },
   //   Unassign user from event
@@ -78,6 +90,17 @@ export const eventApi = {
   ): Promise<CalendarEvent> => {
     return fetchApi<CalendarEvent>(
       `/api/event/${eventId}/remove-from-calendar/${calendarId}`,
+      {
+        method: 'PUT'
+      }
+    );
+  },
+  addEventToCalendar: async (
+    eventId: number,
+    calendarId: number
+  ): Promise<CalendarEvent> => {
+    return fetchApi<CalendarEvent>(
+      `/api/event/${eventId}/add-to-calendar/${calendarId}`,
       {
         method: 'PUT'
       }
