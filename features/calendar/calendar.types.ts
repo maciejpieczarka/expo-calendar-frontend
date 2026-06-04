@@ -1,5 +1,3 @@
-import { CalendarEvent } from '@/types/ICalendar';
-
 export interface OptimizedCalendarEvent {
   id: number;
   name: string;

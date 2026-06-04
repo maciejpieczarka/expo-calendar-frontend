@@ -8,6 +8,7 @@ import { useRef } from 'react';
 import { MonthGridSkeleton } from '@/components/calendar/monthGridSkeleton';
 import { ReactNode } from 'react';
 import { SelectOption } from '@/components/calendar/scrollableSelect';
+import { MonthPageWrapper } from '@/components/calendar/monthPageWrapper';
 
 export interface CalendarHeaderProps {
   selectedYear: SelectOption;
@@ -21,9 +22,14 @@ export interface CalendarHeaderProps {
 export interface CalendarProps {
   calendarIds: number[];
   renderHeader?: (props: CalendarHeaderProps) => ReactNode;
+  handleEventDataChange?: (year: number, month: number) => void;
 }
 
-function Calendar({ calendarIds, renderHeader }: CalendarProps) {
+function Calendar({
+  calendarIds,
+  renderHeader,
+  handleEventDataChange
+}: CalendarProps) {
   const {
     currentMonthValue,
     currentYear,
@@ -35,7 +41,7 @@ function Calendar({ calendarIds, renderHeader }: CalendarProps) {
     INITIAL_INDEX,
     onPageChange,
     isJumping
-  } = useCalendarViewModel({ calendarIds });
+  } = useCalendarViewModel({ calendarIds, handleEventDataChange });
 
   const pagerRef = useRef<PagerView>(null);
 
@@ -81,13 +87,7 @@ function Calendar({ calendarIds, renderHeader }: CalendarProps) {
             offscreenPageLimit={2}
           >
             {renderedMonths.map(monthPage => (
-              <View key={monthPage.id} style={{ flex: 1 }}>
-                {monthPage.dayCells.length > 0 ? (
-                  <MonthGrid dayCells={monthPage.dayCells} />
-                ) : (
-                  <View style={{ flex: 1 }} />
-                )}
-              </View>
+              <MonthPageWrapper key={monthPage.id} monthPage={monthPage} />
             ))}
           </PagerView>
         </View>

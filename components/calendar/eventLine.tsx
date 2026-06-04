@@ -1,5 +1,6 @@
 import { View } from 'react-native';
-import { Text } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
+import { useMemo } from 'react';
 
 export interface EventLineProps {
   name: string;
@@ -7,20 +8,23 @@ export interface EventLineProps {
 }
 
 function EventLine({ name, color }: EventLineProps) {
+  const colorStyle = useMemo(() => ({ backgroundColor: color }), [color]);
   return (
-    <Text
-      numberOfLines={1}
-      style={{
-        fontSize: 8,
-        backgroundColor: color,
-        marginBottom: 2,
-        borderRadius: 2
-      }}
-      className={'m-0 p-0 text-ellipsis '}
-    >
+    <Text numberOfLines={1} style={[styles.text, colorStyle]}>
       {name}
     </Text>
   );
 }
 
 export default EventLine;
+
+const styles = StyleSheet.create({
+  text: {
+    fontSize: 8,
+    marginBottom: 2,
+    borderRadius: 2,
+    marginLeft: 3,
+    marginRight: 3,
+    padding: 0
+  }
+});

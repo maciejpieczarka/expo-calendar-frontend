@@ -4,12 +4,14 @@ import {
   OptimizedCalendarEvent
 } from '@/features/calendar/calendar.types';
 
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { format } from 'date-fns';
-import { CalendarService } from '@/features/calendar/calendarService';
 import { INITIAL_INDEX, WINDOW_SIZE } from '@/constants/calendar.constants';
 import { SelectOption } from '@/components/calendar/scrollableSelect';
-import { CalendarEvent, User } from '@/types/ICalendar';
+import { CalendarEvent } from '@/types/IEvent';
+import { User } from '@/types/Iauth';
+import { useEventStore } from '@/lib/eventStore';
+import { generateGrid, getNextMonth } from '@/utils/dateUtils';
 
 interface CalendarViewModel {
   currentMonthValue: SelectOption;
@@ -26,243 +28,20 @@ interface CalendarViewModel {
 
 interface CalendarViewModelProps {
   calendarIds: number[];
+  handleEventDataChange?: (year: number, month: number) => void;
 }
 
-const mockEvents: CalendarEvent[] = [
-  {
-    id: 1,
-    name: 'Daily Standup',
-    description: 'Team sync',
-    startDate: '2026-06-15T08:00:00',
-    endDate: '2026-06-15T08:30:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#3B82F6'
-  },
-  {
-    id: 2,
-    name: 'Sprint Planning',
-    description: 'Sprint planning session',
-    startDate: '2026-06-15T08:45:00',
-    endDate: '2026-06-15T09:30:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#10B981'
-  },
-  {
-    id: 3,
-    name: 'Design Review',
-    description: 'Review UI changes',
-    startDate: '2026-06-15T09:00:00',
-    endDate: '2026-06-15T10:00:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#F59E0B'
-  },
-  {
-    id: 4,
-    name: 'Backend Sync',
-    description: 'API discussion',
-    startDate: '2026-06-15T09:45:00',
-    endDate: '2026-06-15T10:15:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#EF4444'
-  },
-  {
-    id: 5,
-    name: 'Product Meeting',
-    description: 'Roadmap review',
-    startDate: '2026-06-15T10:00:00',
-    endDate: '2026-06-15T11:00:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#8B5CF6'
-  },
-  {
-    id: 6,
-    name: '1:1 Meeting',
-    description: 'Manager catch-up',
-    startDate: '2026-06-15T10:30:00',
-    endDate: '2026-06-15T11:00:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#06B6D4'
-  },
-  {
-    id: 7,
-    name: 'Architecture Review',
-    description: 'System design discussion',
-    startDate: '2026-06-15T11:00:00',
-    endDate: '2026-06-15T12:00:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#84CC16'
-  },
-  {
-    id: 8,
-    name: 'Client Call',
-    description: 'Project status update',
-    startDate: '2026-06-15T11:15:00',
-    endDate: '2026-06-15T12:15:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#F97316'
-  },
-  {
-    id: 9,
-    name: 'Lunch Break',
-    description: 'Lunch',
-    startDate: '2026-06-15T12:00:00',
-    endDate: '2026-06-15T13:00:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#64748B'
-  },
-  {
-    id: 10,
-    name: 'QA Session',
-    description: 'Testing review',
-    startDate: '2026-06-15T13:00:00',
-    endDate: '2026-06-15T14:00:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#EC4899'
-  },
-  {
-    id: 11,
-    name: 'Bug Triage',
-    description: 'Prioritize bugs',
-    startDate: '2026-06-15T13:15:00',
-    endDate: '2026-06-15T13:45:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#14B8A6'
-  },
-  {
-    id: 12,
-    name: 'Feature Workshop',
-    description: 'Discuss new feature',
-    startDate: '2026-06-15T14:00:00',
-    endDate: '2026-06-15T15:30:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#A855F7'
-  },
-  {
-    id: 13,
-    name: 'Marketing Sync',
-    description: 'Campaign planning',
-    startDate: '2026-06-15T14:30:00',
-    endDate: '2026-06-15T15:00:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#22C55E'
-  },
-  {
-    id: 14,
-    name: 'Code Review',
-    description: 'Review pull requests',
-    startDate: '2026-06-15T15:00:00',
-    endDate: '2026-06-15T16:00:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#0EA5E9'
-  },
-  {
-    id: 15,
-    name: 'Tech Talk',
-    description: 'Knowledge sharing',
-    startDate: '2026-06-15T15:30:00',
-    endDate: '2026-06-15T16:30:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#EAB308'
-  },
-  {
-    id: 16,
-    name: 'Research Session',
-    description: 'Investigate solutions',
-    startDate: '2026-06-15T16:00:00',
-    endDate: '2026-06-15T17:00:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#DC2626'
-  },
-  {
-    id: 17,
-    name: 'Stakeholder Meeting',
-    description: 'Project alignment',
-    startDate: '2026-06-15T16:15:00',
-    endDate: '2026-06-15T17:15:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#7C3AED'
-  },
-  {
-    id: 18,
-    name: 'Deployment',
-    description: 'Release to production',
-    startDate: '2026-06-15T17:00:00',
-    endDate: '2026-06-15T17:30:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#059669'
-  },
-  {
-    id: 19,
-    name: 'Retrospective',
-    description: 'Sprint retrospective',
-    startDate: '2026-06-15T17:30:00',
-    endDate: '2026-06-15T18:30:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#D97706'
-  },
-  {
-    id: 20,
-    name: 'Wrap-up',
-    description: 'End of day review',
-    startDate: '2026-06-15T18:45:00',
-    endDate: '2026-06-15T19:00:00',
-    calendars: [],
-    participants: [],
-    owner: {} as User,
-    color: '#475569'
-  }
-];
-
-const optimizedEvents: OptimizedCalendarEvent[] = mockEvents.map(element => ({
-  id: element.id,
-  name: element.name,
-  color: element.color
-}));
-
 export const useCalendarViewModel = ({
-  calendarIds
+  calendarIds,
+  handleEventDataChange
 }: CalendarViewModelProps): CalendarViewModel => {
   const [initialAnchorDate, setInitialAnchorDate] = useState(new Date());
   const [activeIndex, setActiveIndex] = useState(INITIAL_INDEX);
   const [isJumping, setIsJumping] = useState(false);
+
+  const { events, isLoading } = useEventStore();
+
+  const todayStr = format(new Date(), 'dd-MM-yyyy');
 
   //months for select
   const availableMonths = useMemo((): SelectOption[] => {
@@ -299,6 +78,10 @@ export const useCalendarViewModel = ({
 
     const targetIndex = INITIAL_INDEX + monthDiff;
 
+    if (targetIndex == activeIndex) {
+      return targetIndex;
+    }
+
     if (targetIndex >= 5 && targetIndex <= WINDOW_SIZE * 2 - 5) {
       setIsJumping(true);
       setTimeout(() => {
@@ -307,6 +90,9 @@ export const useCalendarViewModel = ({
       setActiveIndex(targetIndex);
       return targetIndex;
     }
+
+    handleEventDataChange && handleEventDataChange(targetYear, targetMonth);
+
     setIsJumping(true);
     setTimeout(() => {
       setIsJumping(false);
@@ -331,7 +117,7 @@ export const useCalendarViewModel = ({
     const pages: MonthSkeleton[] = [];
 
     for (let i = -WINDOW_SIZE; i <= WINDOW_SIZE; i++) {
-      const pageDate = CalendarService.getNextMonth(initialAnchorDate, i);
+      const pageDate = getNextMonth(initialAnchorDate, i);
 
       pages.push({
         // id: `page-${format(pageDate, 'yyyy-MM')}`,
@@ -345,28 +131,33 @@ export const useCalendarViewModel = ({
   // rendering MonthGrids the closest to user
   const renderedMonths = useMemo((): MonthPageData[] => {
     return monthSkeletons.map((page: MonthSkeleton, index): MonthPageData => {
-      const today = new Date();
-      const isNearActive = Math.abs(index - activeIndex) <= 1;
+      const isNearActive = Math.abs(index - activeIndex) <= 2;
 
       if (!isNearActive) {
         return { ...page, dayCells: [] };
       }
-      const baseDates = CalendarService.generateGrid(page.date);
+      const baseDates = generateGrid(page.date);
+
+      const optimizedEvents: OptimizedCalendarEvent[] = events.map(element => ({
+        id: element.id,
+        name: element.name,
+        color: element.color
+      }));
+
       return {
         ...page,
         dayCells: baseDates.map(element => ({
           id: format(element, 'dd-MM-yyyy'),
           dayNumber: element.getDate(),
           isCurrentMonth: element.getMonth() === page.date.getMonth(),
-          isToday:
-            format(element, 'dd-MM-yyyy') === format(today, 'dd-MM-yyyy'),
-          events: optimizedEvents.slice(0, 5)
+          isToday: format(element, 'dd-MM-yyyy') === todayStr,
+          events: optimizedEvents.slice(0, 4)
         }))
       };
     });
-  }, [monthSkeletons, activeIndex]);
+  }, [monthSkeletons, activeIndex, events]);
 
-  const activeDateObj = CalendarService.getNextMonth(
+  const activeDateObj = getNextMonth(
     initialAnchorDate,
     activeIndex - INITIAL_INDEX
   );
