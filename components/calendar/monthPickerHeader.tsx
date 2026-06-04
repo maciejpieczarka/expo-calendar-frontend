@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { Icon, Check, Undo2 } from 'lucide-react-native';
 
-export interface MonthHeaderProps {
+export interface MonthPickerHeaderProps {
   selectedYear: SelectOption;
   selectedMonth: SelectOption;
   yearOptions: SelectOption[];
@@ -17,14 +17,14 @@ export interface MonthHeaderProps {
   onReturnPress: () => void;
 }
 
-function MonthHeader({
+function MonthPickerHeader({
   selectedMonth,
   selectedYear,
   monthOptions,
   yearOptions,
   onDateChange,
   onReturnPress
-}: MonthHeaderProps) {
+}: MonthPickerHeaderProps) {
   const [localYear, setLocalYear] = useState<SelectOption>(selectedYear);
   const [localMonth, setLocalMonth] = useState<SelectOption>(selectedMonth);
 
@@ -68,4 +68,4 @@ function MonthHeader({
   );
 }
 
-export default MonthHeader;
+export default MonthPickerHeader;

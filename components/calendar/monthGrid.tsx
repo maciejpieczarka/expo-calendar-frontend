@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import DayCell from '@/components/calendar/dayCell';
 import { DayCellData } from '@/features/calendar/calendar.types';
 
@@ -8,10 +8,10 @@ export interface MonthGridProps {
 
 function MonthGrid({ dayCells }: MonthGridProps) {
   return (
-    <View className="flex flex-row flex-1 flex-wrap w-full">
-      {dayCells.map(day => (
+    <View style={styles.wrapper}>
+      {dayCells.map((day, index) => (
         <DayCell
-          key={day.id}
+          key={`cell-slot-${index}`}
           id={day.id}
           isToday={day.isToday}
           isCurrentMonth={day.isCurrentMonth}
@@ -22,5 +22,15 @@ function MonthGrid({ dayCells }: MonthGridProps) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  wrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexGrow: 1,
+    flexWrap: 'wrap',
+    width: '100%'
+  }
+});
 
 export default MonthGrid;
