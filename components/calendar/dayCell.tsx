@@ -1,24 +1,17 @@
-import { View, StyleSheet, InteractionManager } from 'react-native';
+import { View, StyleSheet, InteractionManager, Pressable } from 'react-native';
 import { JSX, memo, useState, useEffect } from 'react';
 import { Text } from 'react-native';
 import EventLine from '@/components/calendar/eventLine';
-import { OptimizedCalendarEvent } from '@/features/calendar/calendar.types';
+import {
+  DayCellData,
+  OptimizedCalendarEvent
+} from '@/features/calendar/calendar.types';
 
 export interface DayCellProps {
-  isCurrentMonth: boolean;
-  isToday: boolean;
-  id: string;
-  dayNumber: number;
-  events: OptimizedCalendarEvent[];
+  dayCellData: DayCellData;
 }
 
-function DayCellComponent({
-  isCurrentMonth,
-  isToday,
-  dayNumber,
-  id,
-  events
-}: DayCellProps): JSX.Element {
+function DayCellComponent({ dayCellData }: DayCellProps): JSX.Element {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -29,22 +22,31 @@ function DayCellComponent({
     return () => task.cancel();
   }, []);
 
+  const handlePress = () => {
+    dayCellData.onCellPress && dayCellData.onCellPress(dayCellData.id);
+  };
+
   return (
     <View style={styles.outer}>
-      <View style={isCurrentMonth ? styles.inner : styles.innerMuted}>
-        <Text style={isToday ? styles.dayNumberToday : styles.dayNumber}>
-          {dayNumber}
+      <Pressable
+        style={dayCellData.isCurrentMonth ? styles.inner : styles.innerMuted}
+        onPress={handlePress}
+      >
+        <Text
+          style={dayCellData.isToday ? styles.dayNumberToday : styles.dayNumber}
+        >
+          {dayCellData.dayNumber}
         </Text>
 
         {isReady &&
-          events.map(element => (
+          dayCellData.events.map(element => (
             <EventLine
               key={element.id}
               name={element.name}
               color={element.color}
             />
           ))}
-      </View>
+      </Pressable>
     </View>
   );
 }
@@ -86,11 +88,13 @@ const styles = StyleSheet.create({
 
 const propEqualCheck = (prevProps: DayCellProps, nextProps: DayCellProps) => {
   return (
-    prevProps.id === nextProps.id &&
-    prevProps.events.length === nextProps.events.length &&
-    prevProps.isCurrentMonth === nextProps.isCurrentMonth &&
-    nextProps.isToday === prevProps.isToday &&
-    areEventsEqual(prevProps.events, nextProps.events)
+    prevProps.dayCellData.id === nextProps.dayCellData.id &&
+    prevProps.dayCellData.events.length ===
+      nextProps.dayCellData.events.length &&
+    prevProps.dayCellData.isCurrentMonth ===
+      nextProps.dayCellData.isCurrentMonth &&
+    nextProps.dayCellData.isToday === prevProps.dayCellData.isToday &&
+    areEventsEqual(prevProps.dayCellData.events, nextProps.dayCellData.events)
   );
 };
 

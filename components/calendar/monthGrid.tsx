@@ -10,14 +10,7 @@ function MonthGrid({ dayCells }: MonthGridProps) {
   return (
     <View style={styles.wrapper}>
       {dayCells.map((day, index) => (
-        <DayCell
-          key={`cell-slot-${index}`}
-          id={day.id}
-          isToday={day.isToday}
-          isCurrentMonth={day.isCurrentMonth}
-          dayNumber={day.dayNumber}
-          events={day.events}
-        />
+        <DayCell key={`cell-slot-${index}`} dayCellData={day} />
       ))}
     </View>
   );

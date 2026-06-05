@@ -10,6 +10,7 @@ export interface DayCellData {
   isCurrentMonth: boolean;
   isToday: boolean;
   events: OptimizedCalendarEvent[];
+  onCellPress?: (dateKey: string) => void;
 }
 
 export interface MonthPageData {

@@ -4,14 +4,14 @@ import {
   OptimizedCalendarEvent
 } from '@/features/calendar/calendar.types';
 
-import { useMemo, useState } from 'react';
-import { format } from 'date-fns';
+import { useCallback, useMemo, useState } from 'react';
+import { format, parseISO } from 'date-fns';
 import { INITIAL_INDEX, WINDOW_SIZE } from '@/constants/calendar.constants';
 import { SelectOption } from '@/components/calendar/scrollableSelect';
-import { CalendarEvent } from '@/types/IEvent';
-import { User } from '@/types/Iauth';
 import { useEventStore } from '@/lib/eventStore';
 import { generateGrid, getNextMonth } from '@/utils/dateUtils';
+import { useRouter } from 'expo-router';
+import { useCalendarStore } from '@/lib/calendarStore';
 
 interface CalendarViewModel {
   currentMonthValue: SelectOption;
@@ -27,21 +27,24 @@ interface CalendarViewModel {
 }
 
 interface CalendarViewModelProps {
-  calendarIds: number[];
   handleEventDataChange?: (year: number, month: number) => void;
+  calendarIds?: number[];
 }
 
 export const useCalendarViewModel = ({
-  calendarIds,
-  handleEventDataChange
+  handleEventDataChange,
+  calendarIds
 }: CalendarViewModelProps): CalendarViewModel => {
   const [initialAnchorDate, setInitialAnchorDate] = useState(new Date());
   const [activeIndex, setActiveIndex] = useState(INITIAL_INDEX);
   const [isJumping, setIsJumping] = useState(false);
 
-  const { events, isLoading } = useEventStore();
+  const { isLoading, eventsMap } = useEventStore();
 
   const todayStr = format(new Date(), 'dd-MM-yyyy');
+  const router = useRouter();
+
+  console.log();
 
   //months for select
   const availableMonths = useMemo((): SelectOption[] => {
@@ -128,6 +131,13 @@ export const useCalendarViewModel = ({
     return pages;
   }, [initialAnchorDate]);
 
+  const openDayEventList = useCallback(
+    (dateKey: string) => {
+      router.push(`../eventsList/${dateKey}`);
+    },
+    [router]
+  );
+
   // rendering MonthGrids the closest to user
   const renderedMonths = useMemo((): MonthPageData[] => {
     return monthSkeletons.map((page: MonthSkeleton, index): MonthPageData => {
@@ -138,24 +148,41 @@ export const useCalendarViewModel = ({
       }
       const baseDates = generateGrid(page.date);
 
-      const optimizedEvents: OptimizedCalendarEvent[] = events.map(element => ({
-        id: element.id,
-        name: element.name,
-        color: element.color
-      }));
+      console.log(eventsMap);
 
       return {
         ...page,
-        dayCells: baseDates.map(element => ({
-          id: format(element, 'dd-MM-yyyy'),
-          dayNumber: element.getDate(),
-          isCurrentMonth: element.getMonth() === page.date.getMonth(),
-          isToday: format(element, 'dd-MM-yyyy') === todayStr,
-          events: optimizedEvents.slice(0, 4)
-        }))
+        dayCells: baseDates.map(element => {
+          const dateKey = format(element, 'dd-MM-yyyy');
+
+          const rawDayEvents = eventsMap[dateKey] || [];
+          const filteredEvents =
+            calendarIds && calendarIds.length > 0
+              ? rawDayEvents.filter(event =>
+                  event.calendars.some(cal => calendarIds.includes(cal.id))
+                )
+              : rawDayEvents;
+
+          const optimizedEvents: OptimizedCalendarEvent[] = filteredEvents
+            .map(event => ({
+              id: event.id,
+              name: event.name,
+              color: event.color
+            }))
+            .slice(0, 4);
+
+          return {
+            id: dateKey,
+            dayNumber: element.getDate(),
+            isCurrentMonth: element.getMonth() === page.date.getMonth(),
+            isToday: dateKey === todayStr,
+            events: optimizedEvents,
+            onCellPress: openDayEventList
+          };
+        })
       };
     });
-  }, [monthSkeletons, activeIndex, events]);
+  }, [monthSkeletons, activeIndex, eventsMap, openDayEventList]);
 
   const activeDateObj = getNextMonth(
     initialAnchorDate,

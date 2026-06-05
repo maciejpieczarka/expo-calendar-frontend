@@ -1,7 +1,14 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
+import { useEffect } from 'react';
+import { useCalendarStore } from '@/lib/calendarStore';
 
 export default function TabLayout() {
+  const { fetchCalendars } = useCalendarStore();
+  useEffect(() => {
+    fetchCalendars();
+  }, []);
+
   return (
     <Tabs screenOptions={{ tabBarActiveTintColor: 'blue', headerShown: false }}>
       <Tabs.Screen
