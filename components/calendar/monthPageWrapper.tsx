@@ -27,10 +27,13 @@ const styles = StyleSheet.create({
 });
 
 const areEqual = (prevProps: Props, nextProps: Props) => {
-  return (
-    prevProps.monthPage.id === nextProps.monthPage.id &&
-    prevProps.monthPage.dayCells.length === nextProps.monthPage.dayCells.length
-  );
+  if (
+    prevProps.monthPage.dayCells.length === 0 &&
+    nextProps.monthPage.dayCells.length === 0
+  ) {
+    return true;
+  }
+  return false;
 };
 
 export const MonthPageWrapper = memo(MonthPageWrapperComponent, areEqual);

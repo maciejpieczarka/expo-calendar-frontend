@@ -20,15 +20,15 @@ export interface CalendarHeaderProps {
 }
 
 export interface CalendarProps {
-  calendarIds: number[];
+  calendarIds?: number[];
   renderHeader?: (props: CalendarHeaderProps) => ReactNode;
   handleEventDataChange?: (year: number, month: number) => void;
 }
 
 function Calendar({
-  calendarIds,
   renderHeader,
-  handleEventDataChange
+  handleEventDataChange,
+  calendarIds
 }: CalendarProps) {
   const {
     currentMonthValue,
@@ -41,7 +41,7 @@ function Calendar({
     INITIAL_INDEX,
     onPageChange,
     isJumping
-  } = useCalendarViewModel({ calendarIds, handleEventDataChange });
+  } = useCalendarViewModel({ handleEventDataChange, calendarIds });
 
   const pagerRef = useRef<PagerView>(null);
 

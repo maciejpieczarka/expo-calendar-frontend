@@ -19,6 +19,7 @@ import { Plus } from 'lucide-react-native';
 import React from 'react';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { CalendarModal } from '@/components/calendar/calendarModal';
 
 const CalendarsListScreen = () => {
   const { state, actions } = useCalendarsList();
@@ -45,6 +46,7 @@ const CalendarsListScreen = () => {
               key={calendar.id}
               name={calendar.name}
               owner={calendar.owner.username}
+              arrowPressHandler={() => actions.openModal(calendar.id)}
             />
           ))}
           <Dialog>
@@ -86,6 +88,11 @@ const CalendarsListScreen = () => {
           </Dialog>
         </ScrollView>
       )}
+      <CalendarModal
+        visible={state.isModalOpen}
+        onClose={actions.closeModal}
+        calendarIds={state.selectedId}
+      />
     </SafeAreaView>
   );
 };

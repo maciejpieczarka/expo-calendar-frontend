@@ -5,11 +5,10 @@ import React from 'react';
 import { useCalendarData } from '@/hooks/calendar/useCalendarData';
 
 export function MainCalendar() {
-  const { isFetching, onActiveDateChange } = useCalendarData();
+  const { isFetching, onActiveDateChange } = useCalendarData({});
   return (
     <View className={'flex-1'}>
       <Calendar
-        calendarIds={[]}
         renderHeader={(props: CalendarHeaderProps) => (
           <MonthPickerHeader
             selectedMonth={props.selectedMonth}

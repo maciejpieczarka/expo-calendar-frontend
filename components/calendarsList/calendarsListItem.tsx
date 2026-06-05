@@ -9,7 +9,17 @@ import {
 } from '../ui/card';
 import { Icon } from '../ui/icon';
 
-const CalendarItem = ({ name, owner }: { name: string; owner: string }) => {
+export interface CalendarsListItemProps {
+  name: string;
+  owner: string;
+  arrowPressHandler?: () => void;
+}
+
+const CalendarItem = ({
+  name,
+  owner,
+  arrowPressHandler
+}: CalendarsListItemProps) => {
   return (
     <Card className="my-2 flex flex-row items-center justify-between">
       <CardHeader className="">
@@ -17,7 +27,7 @@ const CalendarItem = ({ name, owner }: { name: string; owner: string }) => {
         <CardDescription>Owner: {owner}</CardDescription>
       </CardHeader>
       <CardContent className="">
-        <Icon as={ArrowRightCircle} />
+        <Icon onPress={arrowPressHandler} as={ArrowRightCircle} />
       </CardContent>
     </Card>
   );
