@@ -1,12 +1,15 @@
 import { eventApi } from '@/api/events';
 import { CreateEventData, EventState, UpdateEventData } from '@/types/IEvent';
 import { create } from 'zustand';
+import { mapEventsByDate } from '@/utils/eventTransformers';
 
 export const useEventStore = create<EventState>()((set, get) => ({
   events: [],
   selectedCalendarIds: [],
   isLoading: false,
   error: null,
+  //a map of CalendarEvents with date keys in format dd-MM-yyyy
+  eventsMap: {},
 
   fetchEventsForCalendars: async (
     calendarIds: number[],
@@ -14,7 +17,7 @@ export const useEventStore = create<EventState>()((set, get) => ({
     dateTo: string
   ) => {
     if (calendarIds.length === 0) {
-      set({ events: [], isLoading: false });
+      set({ eventsMap: {}, events: [], isLoading: false });
       return;
     }
 
@@ -26,7 +29,9 @@ export const useEventStore = create<EventState>()((set, get) => ({
         dateFrom,
         dateTo
       });
-      set({ events: data, isLoading: false });
+      const map = mapEventsByDate(data);
+
+      set({ eventsMap: map, events: data, isLoading: false });
     } catch (error: any) {
       set({
         isLoading: false,

@@ -15,8 +15,8 @@ export type CalendarEvent = {
   id: number;
   name: string;
   description: string;
-  startTime: string; // ISO 8601 format
-  endTime: string; // ISO 8601 format
+  startDate: string; // ISO 8601 format
+  endDate: string; // ISO 8601 format
   calendars: Calendar[];
   participants: User[];
   owner: User;
@@ -36,6 +36,7 @@ export type EventState = {
   selectedCalendarIds: number[]; // ID kalendarzy zaznaczonych na ekranie głównym (nad kalendarzem)
   isLoading: boolean;
   error: string | null;
+  eventsMap: Record<string, CalendarEvent[]>;
 
   // Pobieranie dla wielu kalendarzy (Ekran Główny / Filtry)
   fetchEventsForCalendars: (

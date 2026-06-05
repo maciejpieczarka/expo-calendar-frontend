@@ -1,6 +1,7 @@
 import { calendarApi } from '@/api/calendar';
-import { CalendarEvent, CalendarState } from '@/types/ICalendar';
+import { CalendarState } from '@/types/ICalendar';
 import { create } from 'zustand';
+import { CalendarEvent } from '@/types/IEvent';
 
 export const useCalendarStore = create<CalendarState>()((set, get) => ({
   calendars: [],
