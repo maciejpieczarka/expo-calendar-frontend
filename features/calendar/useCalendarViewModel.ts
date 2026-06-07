@@ -4,14 +4,13 @@ import {
   OptimizedCalendarEvent
 } from '@/features/calendar/calendar.types';
 
-import { useCallback, useMemo, useState } from 'react';
-import { format, parseISO } from 'date-fns';
-import { INITIAL_INDEX, WINDOW_SIZE } from '@/constants/calendar.constants';
 import { SelectOption } from '@/components/calendar/scrollableSelect';
+import { INITIAL_INDEX, WINDOW_SIZE } from '@/constants/calendar.constants';
 import { useEventStore } from '@/lib/eventStore';
 import { generateGrid, getNextMonth } from '@/utils/dateUtils';
+import { format } from 'date-fns';
 import { useRouter } from 'expo-router';
-import { useCalendarStore } from '@/lib/calendarStore';
+import { useCallback, useMemo, useState } from 'react';
 
 interface CalendarViewModel {
   currentMonthValue: SelectOption;
@@ -43,8 +42,6 @@ export const useCalendarViewModel = ({
 
   const todayStr = format(new Date(), 'dd-MM-yyyy');
   const router = useRouter();
-
-  console.log();
 
   //months for select
   const availableMonths = useMemo((): SelectOption[] => {
@@ -153,7 +150,7 @@ export const useCalendarViewModel = ({
       return {
         ...page,
         dayCells: baseDates.map(element => {
-          const dateKey = format(element, 'dd-MM-yyyy');
+          const dateKey = format(element, 'yyyy-MM-dd');
 
           const rawDayEvents = eventsMap[dateKey] || [];
           const filteredEvents =

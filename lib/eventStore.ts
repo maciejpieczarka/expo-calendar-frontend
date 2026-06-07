@@ -1,7 +1,7 @@
 import { eventApi } from '@/api/events';
 import { CreateEventData, EventState, UpdateEventData } from '@/types/IEvent';
-import { create } from 'zustand';
 import { mapEventsByDate } from '@/utils/eventTransformers';
+import { create } from 'zustand';
 
 export const useEventStore = create<EventState>()((set, get) => ({
   events: [],
@@ -56,8 +56,10 @@ export const useEventStore = create<EventState>()((set, get) => ({
   },
   createNewEvent: async (eventData: CreateEventData) => {
     set({ isLoading: true, error: null });
+
     try {
       const newEvent = await eventApi.createEvent(eventData);
+
       const hasSelectedCalendar = newEvent.calendars.some(calendar =>
         get().selectedCalendarIds.includes(calendar.id)
       );
