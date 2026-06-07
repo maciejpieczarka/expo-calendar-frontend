@@ -1,12 +1,11 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native';
-import { CalendarEvent } from '@/types/IEvent';
 import { EmptyDay } from '@/components/dayEventList/emptyDay';
 import { EventListItem } from '@/components/dayEventList/eventListItem';
-import { ArrowLeft, PlusIcon } from 'lucide-react-native';
-import { usePressState } from '@/hooks/dayEventsList/usePressState';
-import { Button } from '@/components/ui/button';
 import { IconButton } from '@/components/dayEventList/iconButton';
+import { CalendarEvent } from '@/types/IEvent';
+import { ArrowLeft, PlusIcon } from 'lucide-react-native';
+import React, { useState } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import AddEventModal from '../events/AddEventModal';
 
 export interface DayEventListProps {
   dayEvents: CalendarEvent[];
@@ -19,6 +18,8 @@ export default function DayEventList({
   date,
   handleReturn
 }: DayEventListProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <View className="flex-1 bg-white ">
       <View className="px-6 ps-3 pt-6 pb-4 border-b w-full flex flex-row items-center">
@@ -29,7 +30,7 @@ export default function DayEventList({
           </Text>
           <Text className="text-2xl font-bold text-zinc-900 ">{date}</Text>
         </View>
-        <IconButton Icon={PlusIcon} />
+        <IconButton Icon={PlusIcon} handlePress={() => setIsModalOpen(true)} />
       </View>
 
       <FlatList
@@ -39,6 +40,11 @@ export default function DayEventList({
         ListEmptyComponent={<EmptyDay />}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+      />
+      <AddEventModal
+        isOpen={isModalOpen}
+        selectedDate={date}
+        onClose={() => setIsModalOpen(false)}
       />
     </View>
   );

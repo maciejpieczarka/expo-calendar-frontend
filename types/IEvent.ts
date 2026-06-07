@@ -3,6 +3,7 @@ import { Calendar } from './ICalendar';
 
 export type CreateEventData = {
   id: number;
+  name: string;
   description?: string;
   startDate: string; // ISO 8601 format
   endDate: string; // ISO 8601 format

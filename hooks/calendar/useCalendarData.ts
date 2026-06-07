@@ -1,9 +1,9 @@
-import { useEffect, useCallback, useState } from 'react';
+import { WINDOW_SIZE } from '@/constants/calendar.constants';
+import { useCalendarStore } from '@/lib/calendarStore';
 import { useEventStore } from '@/lib/eventStore';
 import { getNextMonth } from '@/utils/dateUtils';
-import { WINDOW_SIZE } from '@/constants/calendar.constants';
 import { endOfMonth, startOfMonth } from 'date-fns';
-import { useCalendarStore } from '@/lib/calendarStore';
+import { useCallback, useEffect } from 'react';
 
 export interface UseCalendarDataProps {
   calendarDesiredIds?: number[];
@@ -26,7 +26,6 @@ export const useCalendarData = ({
     //     ? calendarDesiredIds
     //     : calendars.map(calendarId => calendarId.id);
     const calendarsIds = calendars.map(calendarId => calendarId.id);
-
     const today = new Date();
     const to = endOfMonth(getNextMonth(today, WINDOW_SIZE));
     const from = startOfMonth(getNextMonth(today, -WINDOW_SIZE));
