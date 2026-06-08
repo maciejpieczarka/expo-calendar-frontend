@@ -6,7 +6,7 @@ export function mapEventsByDate(events: CalendarEvent[]) {
   const map: Record<string, CalendarEvent[]> = {};
   events.forEach(event => {
     const parsedDate = parseISO(event.startDate);
-    const dateKey = format(new Date(parsedDate), 'dd-MM-yyyy');
+    const dateKey = format(new Date(parsedDate), 'yyyy-MM-dd');
 
     if (!map[dateKey]) map[dateKey] = [];
 

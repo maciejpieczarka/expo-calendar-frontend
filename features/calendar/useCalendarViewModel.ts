@@ -38,9 +38,12 @@ export const useCalendarViewModel = ({
   const [activeIndex, setActiveIndex] = useState(INITIAL_INDEX);
   const [isJumping, setIsJumping] = useState(false);
 
-  const { isLoading, eventsMap } = useEventStore();
+  // ZMIANA: Pobieramy czystą tablicę events z Zustand store zamiast eventsMap
+  const events = useEventStore(state => state.events);
+  const isLoading = useEventStore(state => state.isLoading);
 
-  const todayStr = format(new Date(), 'dd-MM-yyyy');
+  // POPRAWKA: Dzisiejsza data musi mieć ten sam format klucza, czyli yyyy-MM-dd, aby "isToday" działało poprawnie
+  const todayStr = format(new Date(), 'yyyy-MM-dd');
   const router = useRouter();
 
   //months for select
@@ -70,7 +73,6 @@ export const useCalendarViewModel = ({
     const targetYear = parseInt(year);
     const targetMonth = parseInt(month);
 
-    // Calculate how many months away the target is from the anchor
     const anchorYear = initialAnchorDate.getFullYear();
     const anchorMonth = initialAnchorDate.getMonth();
     const monthDiff =
@@ -112,7 +114,6 @@ export const useCalendarViewModel = ({
   };
 
   // skeletons without dayCells
-
   const monthSkeletons: MonthSkeleton[] = useMemo((): MonthSkeleton[] => {
     const pages: MonthSkeleton[] = [];
 
@@ -120,7 +121,6 @@ export const useCalendarViewModel = ({
       const pageDate = getNextMonth(initialAnchorDate, i);
 
       pages.push({
-        // id: `page-${format(pageDate, 'yyyy-MM')}`,
         id: `page-${i}`,
         date: pageDate
       });
@@ -145,14 +145,17 @@ export const useCalendarViewModel = ({
       }
       const baseDates = generateGrid(page.date);
 
-      console.log(eventsMap);
-
       return {
         ...page,
         dayCells: baseDates.map(element => {
           const dateKey = format(element, 'yyyy-MM-dd');
 
-          const rawDayEvents = eventsMap[dateKey] || [];
+          // ZMIANA: Zamiast mapy filtrujemy tablicę w locie dla tego konkretnego dnia
+          const rawDayEvents = (events || []).filter(event => {
+            if (!event.startDate) return false;
+            return event.startDate.split('T')[0] === dateKey;
+          });
+
           const filteredEvents =
             calendarIds && calendarIds.length > 0
               ? rawDayEvents.filter(event =>
@@ -179,7 +182,15 @@ export const useCalendarViewModel = ({
         })
       };
     });
-  }, [monthSkeletons, activeIndex, eventsMap, openDayEventList]);
+    // ZMIANA: Podmieniono eventsMap na events w tablicy zależności useMemo
+  }, [
+    monthSkeletons,
+    activeIndex,
+    events,
+    calendarIds,
+    openDayEventList,
+    todayStr
+  ]);
 
   const activeDateObj = getNextMonth(
     initialAnchorDate,

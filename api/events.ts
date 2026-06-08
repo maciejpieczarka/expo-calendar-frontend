@@ -10,7 +10,7 @@ export const eventApi = {
   createEvent: async (event: CreateEventData): Promise<CalendarEvent> => {
     return fetchApi<CalendarEvent>('/api/event', {
       method: 'POST',
-      body: JSON.stringify({ event })
+      body: JSON.stringify(event)
     });
   },
   //   Get events by calendar IDs and date range
