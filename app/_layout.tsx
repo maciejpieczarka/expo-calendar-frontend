@@ -7,6 +7,8 @@ import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 import { useEffect } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
@@ -29,25 +31,29 @@ export default function RootLayout() {
     return null;
   }
   return (
-    <SafeAreaProvider>
-      <ThemeProvider value={NAV_THEME[colorScheme ?? 'dark']}>
-        <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Protected guard={isLoggedIn}>
-            <Stack.Screen name="(tabs)" />
-          </Stack.Protected>
+    <GestureHandlerRootView>
+      <KeyboardProvider>
+        <SafeAreaProvider>
+          <ThemeProvider value={NAV_THEME[colorScheme ?? 'dark']}>
+            <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Protected guard={isLoggedIn}>
+                <Stack.Screen name="(tabs)" />
+              </Stack.Protected>
 
-          <Stack.Protected guard={!isLoggedIn && !hasCompletedOnboarding}>
-            <Stack.Screen name="index" />
-          </Stack.Protected>
+              <Stack.Protected guard={!isLoggedIn && !hasCompletedOnboarding}>
+                <Stack.Screen name="index" />
+              </Stack.Protected>
 
-          <Stack.Protected guard={!isLoggedIn && hasCompletedOnboarding}>
-            <Stack.Screen name="(auth)" />
-          </Stack.Protected>
-        </Stack>
+              <Stack.Protected guard={!isLoggedIn && hasCompletedOnboarding}>
+                <Stack.Screen name="(auth)" />
+              </Stack.Protected>
+            </Stack>
 
-        <PortalHost />
-      </ThemeProvider>
-    </SafeAreaProvider>
+            <PortalHost />
+          </ThemeProvider>
+        </SafeAreaProvider>
+      </KeyboardProvider>
+    </GestureHandlerRootView>
   );
 }

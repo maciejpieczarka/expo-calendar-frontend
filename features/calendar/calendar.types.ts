@@ -1,0 +1,25 @@
+export interface OptimizedCalendarEvent {
+  id: number;
+  name: string;
+  color: string;
+}
+
+export interface DayCellData {
+  id: string;
+  dayNumber: number;
+  isCurrentMonth: boolean;
+  isToday: boolean;
+  events: OptimizedCalendarEvent[];
+  onCellPress?: (dateKey: string) => void;
+}
+
+export interface MonthPageData {
+  id: string;
+  date: Date;
+  dayCells: DayCellData[];
+}
+
+export interface MonthSkeleton {
+  id: string;
+  date: Date;
+}
