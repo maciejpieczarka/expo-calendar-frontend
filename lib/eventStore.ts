@@ -119,7 +119,7 @@ export const useEventStore = create<EventState>()((set, get) => ({
   unassignUserFromEvent: async (eventId: number, userId: number) => {
     set({ isLoading: true, error: null });
     try {
-      const updatedEvent = await eventApi.assignUserToEvent(eventId, userId);
+      const updatedEvent = await eventApi.unassignUserFromEvent(eventId, userId);
       set(state => ({
         events: state.events.map(e => (e.id === eventId ? updatedEvent : e)),
         isLoading: false
