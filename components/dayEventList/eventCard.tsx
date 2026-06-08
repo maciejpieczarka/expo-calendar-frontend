@@ -1,7 +1,7 @@
-import { Text, View } from 'react-native';
-import React from 'react';
-import { UserRound, Users } from 'lucide-react-native';
 import { CalendarEvent } from '@/types/IEvent';
+import { UserRound, Users } from 'lucide-react-native';
+import React from 'react';
+import { Text, View } from 'react-native';
 
 export function EventCard({ event }: { event: CalendarEvent }) {
   return (
@@ -9,7 +9,7 @@ export function EventCard({ event }: { event: CalendarEvent }) {
       style={{ backgroundColor: event.color }}
       className="flex-1 rounded-2xl p-4 min-h-[75px] justify-center"
     >
-      <Text className="text-white text-lg font-bold tracking-tight mb-2">
+      <Text className="text-lg font-bold tracking-tight mb-2">
         {event.name}
       </Text>
 

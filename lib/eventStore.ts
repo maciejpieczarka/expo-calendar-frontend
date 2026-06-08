@@ -1,6 +1,5 @@
 import { eventApi } from '@/api/events';
 import { CreateEventData, EventState, UpdateEventData } from '@/types/IEvent';
-import { mapEventsByDate } from '@/utils/eventTransformers';
 import { create } from 'zustand';
 
 export const useEventStore = create<EventState>()((set, get) => ({
@@ -8,8 +7,6 @@ export const useEventStore = create<EventState>()((set, get) => ({
   selectedCalendarIds: [],
   isLoading: false,
   error: null,
-  //a map of CalendarEvents with date keys in format dd-MM-yyyy
-  eventsMap: {},
 
   fetchEventsForCalendars: async (
     calendarIds: number[],
@@ -17,7 +14,7 @@ export const useEventStore = create<EventState>()((set, get) => ({
     dateTo: string
   ) => {
     if (calendarIds.length === 0) {
-      set({ eventsMap: {}, events: [], isLoading: false });
+      set({ events: [], isLoading: false });
       return;
     }
 
@@ -29,9 +26,8 @@ export const useEventStore = create<EventState>()((set, get) => ({
         dateFrom,
         dateTo
       });
-      const map = mapEventsByDate(data);
 
-      set({ eventsMap: map, events: data, isLoading: false });
+      set({ events: data, isLoading: false });
     } catch (error: any) {
       set({
         isLoading: false,
@@ -56,21 +52,16 @@ export const useEventStore = create<EventState>()((set, get) => ({
   },
   createNewEvent: async (eventData: CreateEventData) => {
     set({ isLoading: true, error: null });
-
     try {
       const newEvent = await eventApi.createEvent(eventData);
-
-      const hasSelectedCalendar = newEvent.calendars.some(calendar =>
-        get().selectedCalendarIds.includes(calendar.id)
-      );
       set(state => ({
-        events: hasSelectedCalendar
-          ? [...state.events, newEvent]
-          : state.events,
+        events: [...state.events, newEvent],
         isLoading: false
       }));
+
       return newEvent;
     } catch (error: any) {
+      console.log(error);
       set({
         isLoading: false,
         error: error.message || 'Blad podczas tworzenia eventu'

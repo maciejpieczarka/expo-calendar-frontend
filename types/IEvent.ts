@@ -37,7 +37,6 @@ export type EventState = {
   selectedCalendarIds: number[]; // ID kalendarzy zaznaczonych na ekranie głównym (nad kalendarzem)
   isLoading: boolean;
   error: string | null;
-  eventsMap: Record<string, CalendarEvent[]>;
 
   // Pobieranie dla wielu kalendarzy (Ekran Główny / Filtry)
   fetchEventsForCalendars: (
