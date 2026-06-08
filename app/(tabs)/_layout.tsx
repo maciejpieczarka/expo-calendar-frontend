@@ -2,11 +2,20 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import { useEffect } from 'react';
 import { useCalendarStore } from '@/lib/calendarStore';
+import { useInvitationNotifications } from '@/hooks/notifications/useInvitationNotifications';
+import { useInvitationStore } from '@/lib/invitationStore';
 
 export default function TabLayout() {
   const { fetchCalendars } = useCalendarStore();
+  const pendingCount = useInvitationStore(state => state.pendingCount);
+  const fetchReceived = useInvitationStore(state => state.fetchReceived);
+  const fetchSent = useInvitationStore(state => state.fetchSent);
+  useInvitationNotifications();
+
   useEffect(() => {
     fetchCalendars();
+    fetchReceived();
+    fetchSent();
   }, []);
 
   return (
@@ -36,6 +45,7 @@ export default function TabLayout() {
         name="notifications"
         options={{
           title: 'Notifications',
+          tabBarBadge: pendingCount > 0 ? pendingCount : undefined,
           tabBarIcon: ({ color }) => (
             <FontAwesome size={18} name="bell" color={color} />
           )

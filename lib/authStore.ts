@@ -37,7 +37,8 @@ export const useAuthStore = create<AuthState>()(
               isLoggedIn: true,
               user: {
                 email: accountData.email,
-                username: accountData.username
+                username: accountData.username,
+                id: accountData.id
               }
             };
           });
