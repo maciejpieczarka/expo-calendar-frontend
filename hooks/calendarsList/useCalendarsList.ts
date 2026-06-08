@@ -1,17 +1,29 @@
 import { useCalendarStore } from '@/lib/calendarStore';
 import { useEffect, useState } from 'react';
+import { useAuthStore } from '@/lib/authStore';
+import { useInvitationStore } from '@/lib/invitationStore';
 
 const useCalendarsList = () => {
   const { calendars, isLoading, error, fetchCalendars, createCalendar } =
     useCalendarStore();
 
+  const user = useAuthStore(state => state.user);
+  const fetchSent = useInvitationStore(state => state.fetchSent);
+
   //selected calendar and modal state
   const [selectedId, setSelectedId] = useState<number[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+  const [inviteCalendarId, setInviteCalendarId] = useState<number>(0);
+
   // Lokalny stan dla nowego kalendarza
   const [newCalendarName, setNewCalendarName] = useState('');
   const [issubmitting, setIsSubmitting] = useState(false);
+
+  const calendarIdsForInvite = calendars
+    .filter(calendar => calendar.owner.id === user?.id)
+    .map(calendar => calendar.id);
 
   useEffect(() => {
     fetchCalendars();
@@ -42,6 +54,16 @@ const useCalendarsList = () => {
     setIsModalOpen(false);
   };
 
+  const openInviteModal = (calendarId: number) => {
+    setInviteCalendarId(calendarId);
+    setIsInviteModalOpen(true);
+  };
+
+  const closeInviteModal = () => {
+    setIsInviteModalOpen(false);
+    fetchSent();
+  };
+
   return {
     state: {
       error,
@@ -51,7 +73,13 @@ const useCalendarsList = () => {
       issubmitting,
       isEmpty: calendars.length === 0,
       selectedId,
-      isModalOpen
+      isModalOpen,
+      isInviteModalOpen,
+      inviteCalendarId,
+      calendarIdsForInvite,
+      selectedCalendar: calendars.find(
+        calendar => calendar.id === inviteCalendarId
+      )
     },
     actions: {
       setNewCalendarName,
@@ -59,7 +87,9 @@ const useCalendarsList = () => {
       setSelectedId,
       setIsModalOpen,
       openModal,
-      closeModal
+      closeModal,
+      openInviteModal,
+      closeInviteModal
     }
   };
 };

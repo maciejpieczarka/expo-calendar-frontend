@@ -1,4 +1,3 @@
-import { View } from 'react-native';
 import { Text, StyleSheet } from 'react-native';
 import { useMemo } from 'react';
 
@@ -20,6 +19,7 @@ export default EventLine;
 
 const styles = StyleSheet.create({
   text: {
+    color: 'white',
     fontSize: 8,
     marginBottom: 2,
     borderRadius: 2,

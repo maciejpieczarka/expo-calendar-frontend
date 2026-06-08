@@ -20,6 +20,7 @@ import React from 'react';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CalendarModal } from '@/components/calendar/calendarModal';
+import { InviteUserModal } from '@/components/notifications/inviteUserModal';
 
 const CalendarsListScreen = () => {
   const { state, actions } = useCalendarsList();
@@ -47,6 +48,10 @@ const CalendarsListScreen = () => {
               name={calendar.name}
               owner={calendar.owner.username}
               arrowPressHandler={() => actions.openModal(calendar.id)}
+              plusPressHandler={() => actions.openInviteModal(calendar.id)}
+              plusIconDisabled={
+                state.calendarIdsForInvite.indexOf(calendar.id) === -1
+              }
             />
           ))}
           <Dialog>
@@ -92,6 +97,16 @@ const CalendarsListScreen = () => {
         visible={state.isModalOpen}
         onClose={actions.closeModal}
         calendarIds={state.selectedId}
+      />
+      <InviteUserModal
+        visible={state.isInviteModalOpen}
+        onClose={actions.closeInviteModal}
+        calendarId={state.inviteCalendarId}
+        existingMemberIds={
+          state.selectedCalendar
+            ? state.selectedCalendar.participants.map(user => user.id)
+            : []
+        }
       />
     </SafeAreaView>
   );

@@ -17,6 +17,7 @@ export interface AuthResponse {
 }
 
 export interface UserAccount {
+  id: number;
   email: string;
   username: string;
 }
@@ -34,6 +35,7 @@ export interface RegisterErrors extends LoginErrors {
 
 // Auth State (Zustand useAuthStore)
 export type User = {
+  id: number;
   email: string;
   username: string;
 };
