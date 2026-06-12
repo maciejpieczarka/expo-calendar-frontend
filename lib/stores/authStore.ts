@@ -1,5 +1,5 @@
 import { authApi } from '@/api/auth';
-import { AuthState } from '@/types/Iauth';
+import { AuthState } from '@/types/Models/AuthModel';
 import * as SecureStore from 'expo-secure-store';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';

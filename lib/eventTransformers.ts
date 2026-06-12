@@ -1,4 +1,4 @@
-import { CalendarEvent } from '@/types/IEvent';
+import { CalendarEvent } from '@/types/Models/EventModel';
 import { format, parseISO } from 'date-fns';
 
 //function that creates a map of CalendarEvents with date keys in format dd-MM-yyyy

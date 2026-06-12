@@ -1,4 +1,4 @@
-import { useEventStore } from '@/lib/eventStore';
+import { useEventStore } from '@/lib/stores/eventStore';
 import { useMemo } from 'react';
 
 export const useCalendarModal = (selectedCalendarId: number) => {

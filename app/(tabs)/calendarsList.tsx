@@ -1,4 +1,6 @@
+import { CalendarModal } from '@/components/calendar/calendarModal';
 import CalendarItem from '@/components/calendarsList/calendarsListItem';
+import { InviteUserModal } from '@/components/notifications/inviteUserModal';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -19,8 +21,6 @@ import { Plus } from 'lucide-react-native';
 import React from 'react';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { CalendarModal } from '@/components/calendar/calendarModal';
-import { InviteUserModal } from '@/components/notifications/inviteUserModal';
 
 const CalendarsListScreen = () => {
   const { state, actions } = useCalendarsList();
@@ -54,45 +54,45 @@ const CalendarsListScreen = () => {
               }
             />
           ))}
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline">
-                <Icon as={Plus} />
-                <Text>Utwórz nowy kalendarz</Text>
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Utwórz nowy kalendarz</DialogTitle>
-                <DialogDescription>
-                  Podaj nazwę nowego kalendarza. Naciśnij przycisk Zapisz, aby
-                  utworzyć.
-                </DialogDescription>
-              </DialogHeader>
-              <View className="grid gap-4">
-                <View className="grid gap-3">
-                  <Label htmlFor="calendar-name">Nazwa</Label>
-                  <Input
-                    id="calendar-name"
-                    placeholder="Plan zajęć"
-                    onChangeText={actions.setNewCalendarName}
-                  />
-                </View>
-              </View>
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button variant="outline">
-                    <Text>Cancel</Text>
-                  </Button>
-                </DialogClose>
-                <Button onPress={actions.handleCreate}>
-                  <Text>Zapisz</Text>
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
         </ScrollView>
       )}
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="outline">
+            <Icon as={Plus} />
+            <Text>Utwórz nowy kalendarz</Text>
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Utwórz nowy kalendarz</DialogTitle>
+            <DialogDescription>
+              Podaj nazwę nowego kalendarza. Naciśnij przycisk Zapisz, aby
+              utworzyć.
+            </DialogDescription>
+          </DialogHeader>
+          <View className="grid gap-4">
+            <View className="grid gap-3">
+              <Label htmlFor="calendar-name">Nazwa</Label>
+              <Input
+                id="calendar-name"
+                placeholder="Plan zajęć"
+                onChangeText={actions.setNewCalendarName}
+              />
+            </View>
+          </View>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">
+                <Text>Cancel</Text>
+              </Button>
+            </DialogClose>
+            <Button onPress={actions.handleCreate}>
+              <Text>Zapisz</Text>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <CalendarModal
         visible={state.isModalOpen}
         onClose={actions.closeModal}

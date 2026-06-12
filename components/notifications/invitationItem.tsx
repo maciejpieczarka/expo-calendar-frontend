@@ -1,8 +1,8 @@
 import { IconButton } from '@/components/ui/iconButton';
-import { Check, Clock, X } from 'lucide-react-native';
-import { View, Text } from 'react-native';
-import { CalendarInvitation } from '@/types/IInvitation';
+import { CalendarInvitation } from '@/types/InvitationModel';
 import { format, parseISO } from 'date-fns';
+import { Check, Clock, X } from 'lucide-react-native';
+import { Text, View } from 'react-native';
 
 export interface InvitationItemProps {
   item: CalendarInvitation;

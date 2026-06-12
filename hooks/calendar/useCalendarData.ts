@@ -1,7 +1,7 @@
 import { WINDOW_SIZE } from '@/constants/calendar.constants';
-import { useCalendarStore } from '@/lib/calendarStore';
-import { useEventStore } from '@/lib/eventStore';
-import { getNextMonth } from '@/utils/dateUtils';
+import { getNextMonth } from '@/lib/dateUtils';
+import { useCalendarStore } from '@/lib/stores/calendarStore';
+import { useEventStore } from '@/lib/stores/eventStore';
 import { endOfMonth, startOfMonth } from 'date-fns';
 import { useCallback, useEffect } from 'react';
 

@@ -1,14 +1,11 @@
-import { View } from 'react-native';
-import MonthPickerHeader from '@/components/calendar/monthPickerHeader';
-import WeekDaysRow from '@/components/calendar/weekDaysRow';
-import MonthGrid from '@/components/calendar/monthGrid';
-import { useCalendarViewModel } from '@/features/calendar/useCalendarViewModel';
-import PagerView from 'react-native-pager-view';
-import { useRef } from 'react';
 import { MonthGridSkeleton } from '@/components/calendar/monthGridSkeleton';
-import { ReactNode } from 'react';
-import { SelectOption } from '@/components/calendar/scrollableSelect';
 import { MonthPageWrapper } from '@/components/calendar/monthPageWrapper';
+import { SelectOption } from '@/components/calendar/scrollableSelect';
+import WeekDaysRow from '@/components/calendar/weekDaysRow';
+import { useCalendarViewModel } from '@/hooks/calendar/useCalendarViewModel';
+import { ReactNode, useRef } from 'react';
+import { View } from 'react-native';
+import PagerView from 'react-native-pager-view';
 
 export interface CalendarHeaderProps {
   selectedYear: SelectOption;

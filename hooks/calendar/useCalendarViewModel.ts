@@ -2,12 +2,12 @@ import {
   MonthPageData,
   MonthSkeleton,
   OptimizedCalendarEvent
-} from '@/features/calendar/calendar.types';
+} from '@/types/calendar.types';
 
 import { SelectOption } from '@/components/calendar/scrollableSelect';
 import { INITIAL_INDEX, WINDOW_SIZE } from '@/constants/calendar.constants';
-import { useEventStore } from '@/lib/eventStore';
-import { generateGrid, getNextMonth } from '@/utils/dateUtils';
+import { generateGrid, getNextMonth } from '@/lib/dateUtils';
+import { useEventStore } from '@/lib/stores/eventStore';
 import { format } from 'date-fns';
 import { useRouter } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';

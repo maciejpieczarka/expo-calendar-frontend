@@ -1,7 +1,7 @@
-import { useCalendarStore } from '@/lib/calendarStore';
+import { useAuthStore } from '@/lib/stores/authStore';
+import { useCalendarStore } from '@/lib/stores/calendarStore';
+import { useInvitationStore } from '@/lib/stores/invitationStore';
 import { useEffect, useState } from 'react';
-import { useAuthStore } from '@/lib/authStore';
-import { useInvitationStore } from '@/lib/invitationStore';
 
 const useCalendarsList = () => {
   const { calendars, isLoading, error, fetchCalendars, createCalendar } =

@@ -1,7 +1,7 @@
 import { EmptyDay } from '@/components/dayEventList/emptyDay';
 import { EventListItem } from '@/components/dayEventList/eventListItem';
 import { IconButton } from '@/components/ui/iconButton';
-import { CalendarEvent } from '@/types/IEvent';
+import { CalendarEvent } from '@/types/Models/EventModel';
 import { ArrowLeft, PlusIcon } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';

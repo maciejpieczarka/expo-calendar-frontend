@@ -9,7 +9,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Text } from '@/components/ui/text';
-import { useLogin } from '@/hooks/useLogin';
+import { useLogin } from '@/hooks/auth/useLogin';
 import { Link } from 'expo-router';
 import * as React from 'react';
 import { ActivityIndicator, TextInput, View } from 'react-native';

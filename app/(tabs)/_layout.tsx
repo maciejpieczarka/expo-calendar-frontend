@@ -1,9 +1,9 @@
+import { useInvitationNotifications } from '@/hooks/notifications/useInvitationNotifications';
+import { useCalendarStore } from '@/lib/stores/calendarStore';
+import { useInvitationStore } from '@/lib/stores/invitationStore';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import { useEffect } from 'react';
-import { useCalendarStore } from '@/lib/calendarStore';
-import { useInvitationNotifications } from '@/hooks/notifications/useInvitationNotifications';
-import { useInvitationStore } from '@/lib/invitationStore';
 
 export default function TabLayout() {
   const { fetchCalendars } = useCalendarStore();

@@ -1,6 +1,6 @@
-import { useCalendarStore } from '@/lib/calendarStore';
-import { useEventStore } from '@/lib/eventStore';
-import { CreateEventData } from '@/types/IEvent';
+import { useCalendarStore } from '@/lib/stores/calendarStore';
+import { useEventStore } from '@/lib/stores/eventStore';
+import { CreateEventData } from '@/types/Models/EventModel';
 import { useState } from 'react';
 
 interface UseAddEventProps {

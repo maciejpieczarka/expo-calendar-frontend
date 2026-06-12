@@ -1,6 +1,7 @@
-import { User } from './Iauth';
-import { Calendar } from './ICalendar';
+import { User } from './AuthModel';
+import { Calendar } from './CalendarModel';
 
+// Event api models
 export type CreateEventData = {
   id: number;
   name: string;

@@ -1,8 +1,8 @@
-import { useEffect, useState, useMemo } from 'react';
-import { useAuthStore } from '@/lib/authStore';
-import { useInvitationStore } from '@/lib/invitationStore';
-import { User } from '@/types/Iauth';
 import { userApi } from '@/api/users';
+import { useAuthStore } from '@/lib/stores/authStore';
+import { useInvitationStore } from '@/lib/stores/invitationStore';
+import { User } from '@/types/Models/AuthModel';
+import { useEffect, useMemo, useState } from 'react';
 
 export const useInviteUserModal = (
   calendarId: number,

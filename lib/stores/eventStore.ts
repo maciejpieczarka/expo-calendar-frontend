@@ -1,5 +1,9 @@
 import { eventApi } from '@/api/events';
-import { CreateEventData, EventState, UpdateEventData } from '@/types/IEvent';
+import {
+  CreateEventData,
+  EventState,
+  UpdateEventData
+} from '@/types/Models/EventModel';
 import { create } from 'zustand';
 
 export const useEventStore = create<EventState>()((set, get) => ({
@@ -119,7 +123,10 @@ export const useEventStore = create<EventState>()((set, get) => ({
   unassignUserFromEvent: async (eventId: number, userId: number) => {
     set({ isLoading: true, error: null });
     try {
-      const updatedEvent = await eventApi.unassignUserFromEvent(eventId, userId);
+      const updatedEvent = await eventApi.unassignUserFromEvent(
+        eventId,
+        userId
+      );
       set(state => ({
         events: state.events.map(e => (e.id === eventId ? updatedEvent : e)),
         isLoading: false

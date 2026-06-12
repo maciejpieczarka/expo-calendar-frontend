@@ -1,6 +1,6 @@
-import { useInvitationStore } from '@/lib/invitationStore';
-import { CalendarInvitation } from '@/types/IInvitation';
-import { useCalendarStore } from '@/lib/calendarStore';
+import { useCalendarStore } from '@/lib/stores/calendarStore';
+import { useInvitationStore } from '@/lib/stores/invitationStore';
+import { CalendarInvitation } from '@/types/InvitationModel';
 
 export interface NotificationScreenState {
   receivedInvitations: CalendarInvitation[];

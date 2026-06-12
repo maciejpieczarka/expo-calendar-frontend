@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { InvitationState } from '@/types/IInvitation';
 import { invitationApi } from '@/api/invitation';
+import { InvitationState } from '@/types/InvitationModel';
+import { create } from 'zustand';
 
 export const useInvitationStore = create<InvitationState>((set, get) => ({
   receivedInvitations: [],

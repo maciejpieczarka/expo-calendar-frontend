@@ -1,4 +1,4 @@
-import { User } from './ICalendar';
+import { User } from './Models/CalendarModel';
 
 export interface CalendarInvitation {
   id: number;

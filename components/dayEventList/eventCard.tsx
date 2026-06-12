@@ -1,4 +1,4 @@
-import { CalendarEvent } from '@/types/IEvent';
+import { CalendarEvent } from '@/types/Models/EventModel';
 import { UserRound, Users } from 'lucide-react-native';
 import React from 'react';
 import { Text, View } from 'react-native';

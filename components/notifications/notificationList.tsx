@@ -1,8 +1,8 @@
-import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
-import { CalendarInvitation } from '@/types/IInvitation';
 import { EmptyInbox } from '@/components/notifications/emptyInbox';
 import { InvitationItem } from '@/components/notifications/invitationItem';
+import { CalendarInvitation } from '@/types/InvitationModel';
+import React from 'react';
+import { FlatList, StyleSheet } from 'react-native';
 
 interface NotificationListProps {
   invitations: CalendarInvitation[];

@@ -1,7 +1,7 @@
+import { NotificationList } from '@/components/notifications/notificationList';
+import { useNotificationScreen } from '@/hooks/notifications/useNotificationScreen';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NotificationList } from '@/components/notifications/notificationList';
-import { useNotificationScreen } from '@/hooks/useNotificationScreen';
 
 const NotificationsScreen = () => {
   const { receivedInvitations, handleAccept, handleDecline } =

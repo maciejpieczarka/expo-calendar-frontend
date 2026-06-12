@@ -1,8 +1,8 @@
-import { CalendarEvent } from '@/types/IEvent';
-import { View } from 'react-native';
 import { EventCard } from '@/components/dayEventList/eventCard';
 import { Text } from '@/components/ui/text';
+import { CalendarEvent } from '@/types/Models/EventModel';
 import { format, parseISO } from 'date-fns';
+import { View } from 'react-native';
 
 export function EventListItem({ event }: { event: CalendarEvent }) {
   const startTime = format(parseISO(event.startDate), 'HH:mm');

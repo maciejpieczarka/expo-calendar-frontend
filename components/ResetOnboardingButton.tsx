@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/lib/authStore';
+import { useAuthStore } from '@/lib/stores/authStore';
 import { RefreshCcw } from 'lucide-react-native';
 import React from 'react';
 import { Button } from './ui/button';

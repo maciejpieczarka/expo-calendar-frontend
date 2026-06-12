@@ -1,5 +1,5 @@
-import { useAuthStore } from '@/lib/authStore';
-import { RegisterErrors } from '@/types/Iauth';
+import { useAuthStore } from '@/lib/stores/authStore';
+import { RegisterErrors } from '@/types/Models/AuthModel';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 

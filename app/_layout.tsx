@@ -1,5 +1,5 @@
 import '@/global.css';
-import { useAuthStore } from '@/lib/authStore';
+import { useAuthStore } from '@/lib/stores/authStore';
 import { NAV_THEME } from '@/lib/theme';
 import { ThemeProvider } from '@react-navigation/native';
 import { PortalHost } from '@rn-primitives/portal';

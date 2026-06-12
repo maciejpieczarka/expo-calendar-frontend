@@ -3,7 +3,7 @@ import {
   CalendarEvent,
   CreateEventData,
   UpdateEventData
-} from '@/types/IEvent';
+} from '@/types/Models/EventModel';
 
 export const eventApi = {
   // Create a new event

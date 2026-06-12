@@ -1,11 +1,13 @@
-import { View, StyleSheet, InteractionManager, Pressable } from 'react-native';
-import { JSX, memo, useState, useEffect } from 'react';
-import { Text } from 'react-native';
 import EventLine from '@/components/calendar/eventLine';
+import { DayCellData, OptimizedCalendarEvent } from '@/types/calendar.types';
+import { JSX, memo, useEffect, useState } from 'react';
 import {
-  DayCellData,
-  OptimizedCalendarEvent
-} from '@/features/calendar/calendar.types';
+  InteractionManager,
+  Pressable,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
 
 export interface DayCellProps {
   dayCellData: DayCellData;

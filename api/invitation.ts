@@ -2,7 +2,7 @@ import { fetchApi } from '@/api/client';
 import {
   CalendarInvitation,
   CreateCalendarInvitationModel
-} from '@/types/IInvitation';
+} from '@/types/InvitationModel';
 
 export const invitationApi = {
   // GET received invitations

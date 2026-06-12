@@ -1,6 +1,6 @@
-import { StyleSheet, View } from 'react-native';
 import DayCell from '@/components/calendar/dayCell';
-import { DayCellData } from '@/features/calendar/calendar.types';
+import { DayCellData } from '@/types/calendar.types';
+import { StyleSheet, View } from 'react-native';
 
 export interface MonthGridProps {
   dayCells: DayCellData[];

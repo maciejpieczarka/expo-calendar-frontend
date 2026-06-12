@@ -1,5 +1,5 @@
-import { useEventStore } from '@/lib/eventStore';
-import { CalendarEvent } from '@/types/IEvent';
+import { useEventStore } from '@/lib/stores/eventStore';
+import { CalendarEvent } from '@/types/Models/EventModel';
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
 

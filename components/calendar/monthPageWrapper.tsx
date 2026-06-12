@@ -1,8 +1,8 @@
 // components/calendar/monthPageWrapper.tsx
-import { View, StyleSheet } from 'react-native';
-import { memo } from 'react';
 import MonthGrid from '@/components/calendar/monthGrid';
-import { MonthPageData } from '@/features/calendar/calendar.types';
+import { MonthPageData } from '@/types/calendar.types';
+import { memo } from 'react';
+import { StyleSheet, View } from 'react-native';
 
 interface Props {
   monthPage: MonthPageData;

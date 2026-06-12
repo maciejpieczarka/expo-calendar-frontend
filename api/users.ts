@@ -1,5 +1,5 @@
 import { fetchApi } from '@/api/client';
-import { User } from '@/types/Iauth';
+import { User } from '@/types/Models/AuthModel';
 
 export const userApi = {
   // GET users with names starting with the given phrase

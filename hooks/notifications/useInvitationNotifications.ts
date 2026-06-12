@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useAuthStore } from '@/lib/stores/authStore';
+import { useInvitationStore } from '@/lib/stores/invitationStore';
 import { Client } from '@stomp/stompjs';
-import { useInvitationStore } from '@/lib/invitationStore';
-import { useAuthStore } from '@/lib/authStore';
+import { useEffect, useRef } from 'react';
 import SockJS from 'sockjs-client';
 
 export function useInvitationNotifications() {
