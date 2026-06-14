@@ -1,6 +1,6 @@
+import { MainCalendar } from '@/features/calendar/components/mainCalendar';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MainCalendar } from '@/components/calendar/mainCalendar';
 
 const MainScreen = () => {
   return (

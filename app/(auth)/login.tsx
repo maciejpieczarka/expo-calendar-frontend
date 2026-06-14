@@ -1,6 +1,6 @@
-import AppFormHeader from '@/components/AppFormHeader';
-import ResetOnboardingButton from '@/components/ResetOnboardingButton';
-import { SignInForm } from '@/components/sign-in-form';
+import AppFormHeader from '@/features/auth/components/AppFormHeader';
+import ResetOnboardingButton from '@/features/auth/components/ResetOnboardingButton';
+import { SignInForm } from '@/features/auth/components/sign-in-form';
 import React from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 

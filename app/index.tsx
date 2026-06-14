@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
-import { useAuthStore } from '@/lib/stores/authStore';
+import { useAuthStore } from '@/features/auth/store/authStore';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { ImageBackground, View } from 'react-native';

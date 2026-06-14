@@ -1,6 +1,6 @@
+import { NAV_THEME } from '@/core/theme/theme';
+import { useAuthStore } from '@/features/auth/store/authStore';
 import '@/global.css';
-import { useAuthStore } from '@/lib/stores/authStore';
-import { NAV_THEME } from '@/lib/theme';
 import { ThemeProvider } from '@react-navigation/native';
 import { PortalHost } from '@rn-primitives/portal';
 import { SplashScreen, Stack } from 'expo-router';

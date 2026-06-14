@@ -1,6 +1,3 @@
-import { CalendarModal } from '@/components/calendar/calendarModal';
-import CalendarItem from '@/components/calendarsList/calendarsListItem';
-import { InviteUserModal } from '@/components/notifications/inviteUserModal';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -16,7 +13,10 @@ import { Icon } from '@/components/ui/icon';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Text } from '@/components/ui/text';
-import useCalendarsList from '@/hooks/calendarsList/useCalendarsList';
+import { CalendarModal } from '@/features/calendar/components/calendarModal';
+import CalendarItem from '@/features/calendar/components/calendarsList/calendarsListItem';
+import useCalendarsList from '@/features/calendar/hooks/calendarsList/useCalendarsList';
+import { InviteUserModal } from '@/features/notifications/components/inviteUserModal';
 import { Plus } from 'lucide-react-native';
 import React from 'react';
 import { ActivityIndicator, ScrollView, View } from 'react-native';

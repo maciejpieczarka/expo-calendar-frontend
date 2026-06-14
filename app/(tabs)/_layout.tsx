@@ -1,6 +1,6 @@
-import { useInvitationNotifications } from '@/hooks/notifications/useInvitationNotifications';
-import { useCalendarStore } from '@/lib/stores/calendarStore';
-import { useInvitationStore } from '@/lib/stores/invitationStore';
+import { useCalendarStore } from '@/features/calendar/store/calendarStore';
+import { useInvitationNotifications } from '@/features/notifications/hooks/useInvitationNotifications';
+import { useInvitationStore } from '@/features/notifications/store/invitationStore';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import { useEffect } from 'react';

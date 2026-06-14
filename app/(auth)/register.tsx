@@ -1,6 +1,6 @@
-import AppFormHeader from '@/components/AppFormHeader';
-import ResetOnboardingButton from '@/components/ResetOnboardingButton';
-import { SignUpForm } from '@/components/sign-up-form';
+import AppFormHeader from '@/features/auth/components/AppFormHeader';
+import ResetOnboardingButton from '@/features/auth/components/ResetOnboardingButton';
+import { SignUpForm } from '@/features/auth/components/sign-up-form';
 import React from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 const RegisterScreen = () => {

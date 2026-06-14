@@ -1,5 +1,5 @@
-import { NotificationList } from '@/components/notifications/notificationList';
-import { useNotificationScreen } from '@/hooks/notifications/useNotificationScreen';
+import { NotificationList } from '@/features/notifications/components/notificationList';
+import { useNotificationScreen } from '@/features/notifications/hooks/useNotificationScreen';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 

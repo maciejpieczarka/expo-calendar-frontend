@@ -1,6 +1,6 @@
-import { Pressable, ViewStyle } from 'react-native';
+import { usePressState } from '@/features/events/hooks/dayEventsList/usePressState';
 import { LucideIcon } from 'lucide-react-native';
-import { usePressState } from '@/hooks/dayEventsList/usePressState';
+import { Pressable, ViewStyle } from 'react-native';
 
 export interface IconButtonProps {
   Icon: LucideIcon;

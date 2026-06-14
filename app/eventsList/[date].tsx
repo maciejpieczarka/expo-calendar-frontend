@@ -1,5 +1,5 @@
-import DayEventList from '@/components/dayEventList/dayEventList';
-import { useDayEventListScreen } from '@/hooks/dayEventsList/useDayEventListScreen';
+import DayEventList from '@/features/events/components/dayEventList/dayEventList';
+import { useDayEventListScreen } from '@/features/events/hooks/dayEventsList/useDayEventListScreen';
 import { useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
