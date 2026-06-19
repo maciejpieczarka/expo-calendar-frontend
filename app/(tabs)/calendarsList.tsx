@@ -19,8 +19,9 @@ import useCalendarsList from '@/features/calendar/hooks/calendarsList/useCalenda
 import { InviteUserModal } from '@/features/notifications/components/inviteUserModal';
 import { Plus } from 'lucide-react-native';
 import React from 'react';
-import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { CalendarEditModal } from '@/features/calendar/components/calendarsList/calendarEditModal';
 
 const CalendarsListScreen = () => {
   const { state, actions } = useCalendarsList();
@@ -43,16 +44,22 @@ const CalendarsListScreen = () => {
       ) : (
         <ScrollView>
           {state.calendars.map(calendar => (
-            <CalendarItem
+            <Pressable
               key={calendar.id}
-              name={calendar.name}
-              owner={calendar.owner.username}
-              arrowPressHandler={() => actions.openModal(calendar.id)}
-              plusPressHandler={() => actions.openInviteModal(calendar.id)}
-              plusIconDisabled={
-                state.calendarIdsForInvite.indexOf(calendar.id) === -1
+              onLongPress={() =>
+                actions.handleCalendarItemLongPress(calendar.id)
               }
-            />
+            >
+              <CalendarItem
+                name={calendar.name}
+                owner={calendar.owner.username}
+                arrowPressHandler={() => actions.openModal(calendar.id)}
+                plusPressHandler={() => actions.openInviteModal(calendar.id)}
+                plusIconDisabled={
+                  state.calendarIdsForInvite.indexOf(calendar.id) === -1
+                }
+              />
+            </Pressable>
           ))}
         </ScrollView>
       )}
@@ -101,12 +108,20 @@ const CalendarsListScreen = () => {
       <InviteUserModal
         visible={state.isInviteModalOpen}
         onClose={actions.closeInviteModal}
-        calendarId={state.inviteCalendarId}
+        calendarId={state.selectedModificationCalendarId}
         existingMemberIds={
           state.selectedCalendar
             ? state.selectedCalendar.participants.map(user => user.id)
             : []
         }
+      />
+      <CalendarEditModal
+        calendarId={state.selectedModificationCalendarId}
+        calendarName={
+          state.selectedCalendar ? state.selectedCalendar.name : 'chuj'
+        }
+        visible={state.isEditModalOpen}
+        onClose={actions.closeEditModal}
       />
     </SafeAreaView>
   );

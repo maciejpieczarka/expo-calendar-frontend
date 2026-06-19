@@ -15,11 +15,14 @@ const useCalendarsList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
-  const [inviteCalendarId, setInviteCalendarId] = useState<number>(0);
+  const [selectedModificationCalendarId, setSelectedModificationCalendarId] =
+    useState<number>(0);
 
   // Lokalny stan dla nowego kalendarza
   const [newCalendarName, setNewCalendarName] = useState('');
   const [issubmitting, setIsSubmitting] = useState(false);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const calendarIdsForInvite = calendars
     .filter(calendar => calendar.owner.id === user?.id)
@@ -55,13 +58,22 @@ const useCalendarsList = () => {
   };
 
   const openInviteModal = (calendarId: number) => {
-    setInviteCalendarId(calendarId);
+    setSelectedModificationCalendarId(calendarId);
     setIsInviteModalOpen(true);
   };
 
   const closeInviteModal = () => {
     setIsInviteModalOpen(false);
     fetchSent();
+  };
+
+  const handleCalendarItemLongPress = (calendarId: number) => {
+    setSelectedModificationCalendarId(calendarId);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
   };
 
   return {
@@ -75,11 +87,12 @@ const useCalendarsList = () => {
       selectedId,
       isModalOpen,
       isInviteModalOpen,
-      inviteCalendarId,
+      selectedModificationCalendarId: selectedModificationCalendarId,
       calendarIdsForInvite,
       selectedCalendar: calendars.find(
-        calendar => calendar.id === inviteCalendarId
-      )
+        calendar => calendar.id === selectedModificationCalendarId
+      ),
+      isEditModalOpen
     },
     actions: {
       setNewCalendarName,
@@ -89,7 +102,9 @@ const useCalendarsList = () => {
       openModal,
       closeModal,
       openInviteModal,
-      closeInviteModal
+      closeInviteModal,
+      closeEditModal,
+      handleCalendarItemLongPress
     }
   };
 };
