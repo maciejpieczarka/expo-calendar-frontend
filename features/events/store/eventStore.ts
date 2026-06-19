@@ -99,6 +99,7 @@ export const useEventStore = create<EventState>()((set, get) => ({
         isLoading: false
       }));
     } catch (error: any) {
+      console.log('err:', error);
       set({ error: error.message || 'Blad podczas aktualizowania eventu' });
       throw error;
     }

@@ -1,11 +1,12 @@
-import { EmptyDay } from './emptyDay';
-import { EventListItem } from './eventListItem';
 import { IconButton } from '@/components/ui/iconButton';
 import { CalendarEvent } from '@/features/events/EventModel';
 import { ArrowLeft, PlusIcon } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import AddEventModal from '../AddEventModal';
+import EventDetailModal from '../EventDetailModal';
+import { EmptyDay } from './emptyDay';
+import { EventListItem } from './eventListItem';
 
 export interface DayEventListProps {
   dayEvents: CalendarEvent[];
@@ -19,6 +20,9 @@ export default function DayEventList({
   handleReturn
 }: DayEventListProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
+    null
+  );
 
   return (
     <View className="flex-1 bg-white ">
@@ -36,7 +40,9 @@ export default function DayEventList({
       <FlatList
         data={dayEvents}
         keyExtractor={item => item.id.toString()}
-        renderItem={({ item }) => <EventListItem event={item} />}
+        renderItem={({ item }) => (
+          <EventListItem event={item} onPress={setSelectedEvent} />
+        )}
         ListEmptyComponent={<EmptyDay />}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
@@ -46,6 +52,13 @@ export default function DayEventList({
         selectedDate={date}
         onClose={() => setIsModalOpen(false)}
       />
+      {selectedEvent && (
+        <EventDetailModal
+          isOpen={!!selectedEvent}
+          event={selectedEvent}
+          onClose={() => setSelectedEvent(null)}
+        />
+      )}
     </View>
   );
 }

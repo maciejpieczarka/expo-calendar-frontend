@@ -34,14 +34,25 @@ export async function fetchApi<T>(
     throw new Error('Podano nieprawidłowe dane');
   }
 
+  const responseText = await response.text();
+
   if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(error.message || `HTTP error! status: ${response.status}`);
+    let errorMessage = `HTTP error! status: ${response.status}`;
+    try {
+      if (responseText) {
+        const errorJson = JSON.parse(responseText);
+        if (errorJson.message) {
+          errorMessage = errorJson.message;
+        }
+      }
+    } catch (_) {}
+    throw new Error(errorMessage);
   }
 
-  if (response.status === 204) {
+  if (response.status === 204 || !responseText.trim()) {
     return {} as T;
   }
 
-  return response.json();
+  return JSON.parse(responseText);
 }
+
